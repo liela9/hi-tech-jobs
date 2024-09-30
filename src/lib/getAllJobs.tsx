@@ -1,21 +1,18 @@
-import React from 'react'
-import { Job } from "./jobsTypes"
-import JobsTable from './tempJobsTable'
 import axios from 'axios'
 import path from 'path'
 import fs from 'fs'
 import Papa from 'papaparse'
 
 
-const OUTPUT_PATH = '/Users/lahar/Documents/Development/jobs-app/src/app/jobs/data'
+const OUTPUT_PATH = 'data/'
 const CATEGORIES = [
-  'data-science',
+  // 'data-science',
   // 'frontend',
   // 'hardware',
   // 'qa',
   // 'security',
   // 'software',
-  // 'support',
+  'support',
 ];
 
 const ROOT_PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
@@ -43,7 +40,7 @@ function loadData() {
 }
 
 function canonicalizeUrl(url: string) {
-  let parsedUrl = new URL(url);
+  const parsedUrl = new URL(url);
   let netloc = parsedUrl.hostname.toLowerCase();
 
   if (netloc.startsWith('www.')) {
@@ -57,49 +54,39 @@ function canonicalizeUrl(url: string) {
   return parsedUrl.toString();
 }
 
-
-function transformData(data: any[]) {
+function transformData(data: any[]): Job[] {
   return data.map(item => ({
     ...item,
-    category: item.category?.toLowerCase(),
-    company: item.company?.toLowerCase(),
     title: item.title?.toLowerCase(),
+    company: item.company?.toLowerCase(),
+    category: item.category?.toLowerCase(),
+    city: item.city?.toLowerCase(),
     level: item.level?.toLowerCase(),
     url: canonicalizeUrl(item.url),
+    updated: item.updated?.toLowerCase(),
   }));
 }
 
-function levelFilter(data: any[]) {
+function levelFilter(data: Job[]): Job[] {
   return data.filter(item =>
     /engineer|representative|student/.test(item.level)
   );
 }
 
-function wordFilter(data: any[]) {
-  const blacklist = ['senior', 'manager'];
+function wordFilter(data: Job[]): Job[] {
+  const blacklist = ['senior', 'manager', 'leader', "architect", "relocation", "principal"];
   return data.filter(item =>
     !blacklist.some(word => new RegExp(word, 'i').test(item.title))
   );
 }
 
-
-const JobsPage = async () => {
-  // const res = await fetch(
-  //   'https://jsonplaceholder.typicode.com/posts',
-  //   { next: { revalidate: 24 * 3600}},// Gets fresh data every 24 hours
-  // ); 
-
+export default async function fetchAllJobs(): Promise<Job[]> {
   await fetchAllFiles();
-  let data = loadData().flat();
-  data = transformData(data);
-  data = levelFilter(data);
-  data = wordFilter(data);
+  const data = loadData().flat();
+  const transformedData = transformData(data);
+  let filteredData = levelFilter(transformedData);
+  filteredData = wordFilter(filteredData);
 
-  return (
-    <div className='items-center w-full'>
-      <JobsTable jobs={data}></JobsTable>
-    </div>
-  )
+  // TODO: return ALL the data
+  return filteredData.slice(0, 5)
 }
-
-export default JobsPage

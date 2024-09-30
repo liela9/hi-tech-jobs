@@ -2,8 +2,10 @@
   "name": "jobs-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "ts-node scripts/initDB.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,18 +19,23 @@
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
     "lucide-react": "^0.440.0",
-    "next": "14.2.9",
+    "next": "^14.2.13",
     "papaparse": "^5.4.1",
     "path": "^0.12.7",
+    "pg": "^8.13.0",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.16.10",
+    "@types/papaparse": "^5.3.14",
+    "@types/pg": "^8.11.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "daisyui": "^4.12.10",
@@ -37,5 +44,10 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }
