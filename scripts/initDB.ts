@@ -1,10 +1,8 @@
-const { connectToDatabase } = require('../lib/db.js');
+const { pool } = require('../lib/db.js');
 const { initializeContent } = require('../lib/initializeContent');
 
 
 const initializeDb = async () => {
-  const client = await connectToDatabase();
-
   try {
     // Initialize database tables
     const allJobsQuery = 
@@ -34,17 +32,17 @@ const initializeDb = async () => {
       );`
     ;
   
-    await client.query(allJobsQuery);
-    await client.query(submittedJobsQuery);
+    await pool.query(allJobsQuery);
+    await pool.query(submittedJobsQuery);
     console.log('Tables initialized');
 
     // Initialize content
-    await initializeContent(client);
+    await initializeContent(pool);
     console.log('Jobs content initialized');
   } catch (error) {
     console.error('Error initializing database:', error);
   } finally {
-    await client.end();
+    await pool.end();
   }
 };
 
