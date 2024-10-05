@@ -33,7 +33,7 @@ async function moveToSubmittedList(row: Job) {
     })
   })
 
-  const result = await res.json()
+  await res.json()
 }
 
 export const columns: ColumnDef<Job>[] = [

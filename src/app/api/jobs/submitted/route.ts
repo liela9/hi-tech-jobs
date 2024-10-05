@@ -31,7 +31,10 @@ export async function POST(request: Request) {
     console.log('data: ', data)
 
     const { title, company, category, city, level, url, updated } = data
-    // TODO: Add row to DB
-    
-    return NextResponse.json({ title, company, category, city, level, url, updated })
+    const query = `INSERT INTO submitted_jobs (title, company, category, city, level, url, updated)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7)
+                    ON CONFLICT (id) DO NOTHING;  -- To avoid duplicate ID insertion`;
+    const values = [title, company, category, city, level, url, updated];
+
+    await pool.query(query, values);
 }
