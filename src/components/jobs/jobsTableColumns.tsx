@@ -16,14 +16,24 @@ import { Tooltip,
   TooltipTrigger, 
   TooltipProvider, 
 } from '@/components/ui/tooltip'
+import { ROOT_PATH } from "@/lib/utils"
 
 
 function moveToViewedList(row: Job) {
   console.log(typeof row)
 }
   
-function moveToSubmittedList(row: Job) {
-  console.log(typeof row)
+async function moveToSubmittedList(row: Job) {
+  const { title,  company, category, city, level, url, updated } = row
+
+  const res = await fetch(ROOT_PATH + 'jobs/submitted', {
+    method: 'POST',
+    body: JSON.stringify({
+      title, company, category, city, level, url, updated
+    })
+  })
+
+  const result = await res.json()
 }
 
 export const columns: ColumnDef<Job>[] = [

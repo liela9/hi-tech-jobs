@@ -7,7 +7,6 @@ const { connectToDatabase } = require('../lib/db');
 export async function GET() {
     const client = await connectToDatabase();
 
-
     try {
         await client.query('BEGIN'); 
 
@@ -24,4 +23,15 @@ export async function GET() {
     } finally {
         await client.end();
     }
+}
+
+
+export async function POST(request: Request) {
+    const data: Job = await request.json()
+    console.log('data: ', data)
+
+    const { title, company, category, city, level, url, updated } = data
+    // TODO: Add row to DB
+    
+    return NextResponse.json({ title, company, category, city, level, url, updated })
 }
