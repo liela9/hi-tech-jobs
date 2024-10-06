@@ -1,12 +1,11 @@
-import { Client } from 'pg';
+import pool from '../lib/db';
 import fetchAllJobs from './getAllJobs';
 
 
-exports.initializeContent = async (client: Client) => {
+const initializeContent = async () => {
     const jobs = await fetchAllJobs()
-    try {
-        await client.query('BEGIN');
 
+    try {
         for (const job of jobs) {
             const query = `
             INSERT INTO all_jobs (title, company, category, city, level, url, updated)
@@ -15,12 +14,11 @@ exports.initializeContent = async (client: Client) => {
             `;
             const values = [job.title, job.company, job.category, job.city, job.level, job.url, job.updated];
 
-            await client.query(query, values); 
+            await pool.query(query, values); 
         }
-
-        await client.query('COMMIT'); 
     } catch (err) {
-        await client.query('ROLLBACK'); // Rollback if there is an error
-        console.error('Error initializing content, rolling back:', err);
+        console.error('Error initializing content:', err);
     }
 };
+
+initializeContent();
