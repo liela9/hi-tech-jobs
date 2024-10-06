@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "env-test": "echo $DB_USER $DB_PASSWORD $DB_HOST $DB_PORT $DB_NAME",
     "dev": "next dev",
-    "prebuild": "ts-node scripts/initDB.js",
-    "build": "next build",
+    "prebuild": "psql -U $DB_USER -h $DB_HOST -p $DB_PORT -d $DB_NAME -f db/initDB.sql",
+    "build": "next build && ts-node src/lib/initializeContent.ts",
     "start": "next start",
     "lint": "next lint"
   },
@@ -39,6 +40,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "daisyui": "^4.12.10",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.9",
     "postcss": "^8",
