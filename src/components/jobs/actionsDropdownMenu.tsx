@@ -14,51 +14,23 @@ import {
 import { ROOT_PATH } from "@/lib/utils"
 
 
-async function removeFromList(listName: string, row: Job) {
-    const { id, title,  company, category, city, level, url } = row
+async function updateSubmissionTime(row: Job) {
+    const { id } = row
+    const currentTime = new Date().getTime()
 
-    if (listName === "submitted_jobs") {
-        const resDelete = await fetch(ROOT_PATH + 'jobs/submitted', {
-          method: 'DELETE',
-          body: JSON.stringify({ id })
-        })
-        await resDelete.json()
-
-        const resInsert = await fetch(ROOT_PATH + 'jobs', {
-            method: 'POST',
-            body: JSON.stringify({ title,  company, category, city, level, url })
-        })
-        await resInsert.json()
-    } else {
-        const resDelete = await fetch(ROOT_PATH + 'jobs', {
-            method: 'DELETE',
-            body: JSON.stringify({ id })
-          })
-          await resDelete.json()
-  
-        const currentTime = new Date().getTime()
-        const resInsert = await fetch(ROOT_PATH + 'jobs/submitted', {
-            method: 'POST',
-            body: JSON.stringify({ title,  company, category, city, level, url, currentTime })
-        })
-        await resInsert.json()
-    }
+    const res = await fetch(ROOT_PATH + 'jobs', {
+        method: 'PUT',
+        body: JSON.stringify({ id, currentTime })
+    })
+    await res.json()
 }
   
 function ActionsDropdownMenu(row: Job) {
     const [submittedChecked, setSubmittedChecked] = React.useState(false)
 
     const handleSubmittedChange = async (checked: boolean) => {
-        // console.log(('in handleSubmittedChange'))
-        // if (checked){ 
-        //     //in case the checkbox is checked, move the job from submitted_jobs back to all_jobs
-        //     console.log(('back to main list (to all jobs)'))
-        //     removeFromList("submitted_jobs", row)
-        // }else{ 
-        //     //in case the checkbox is NOT checked, move from all_jobs to submitted_jobs
-        //     console.log('moving to submitted list')
-        //     removeFromList("all_jobs", row)
-        // }
+        console.log(('in handleSubmittedChange'))
+        updateSubmissionTime(row)
         setSubmittedChecked(checked) 
     } 
 

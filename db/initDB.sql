@@ -8,3 +8,5 @@ CREATE table IF NOT EXISTS jobs (
     url VARCHAR(500) NOT NULL,
     submission_time VARCHAR(255) default '0' NOT NULL
 );        
+
+DELETE FROM jobs;
