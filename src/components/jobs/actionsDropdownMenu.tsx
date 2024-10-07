@@ -45,20 +45,20 @@ async function removeFromList(listName: string, row: Job) {
     }
 }
   
-export function actionsDropdownMenu(row: Job) {
+function ActionsDropdownMenu(row: Job) {
     const [submittedChecked, setSubmittedChecked] = React.useState(false)
 
     const handleSubmittedChange = async (checked: boolean) => {
-        console.log(('in handleSubmittedChange'))
-        if (checked){ 
-            //in case the checkbox is checked, move the job from submitted_jobs back to all_jobs
-            console.log(('back to main list (to all jobs)'))
-            removeFromList("submitted_jobs", row)
-        }else{ 
-            //in case the checkbox is NOT checked, move from all_jobs to submitted_jobs
-            console.log('moving to submitted list')
-            removeFromList("all_jobs", row)
-        }
+        // console.log(('in handleSubmittedChange'))
+        // if (checked){ 
+        //     //in case the checkbox is checked, move the job from submitted_jobs back to all_jobs
+        //     console.log(('back to main list (to all jobs)'))
+        //     removeFromList("submitted_jobs", row)
+        // }else{ 
+        //     //in case the checkbox is NOT checked, move from all_jobs to submitted_jobs
+        //     console.log('moving to submitted list')
+        //     removeFromList("all_jobs", row)
+        // }
         setSubmittedChecked(checked) 
     } 
 
@@ -83,3 +83,5 @@ export function actionsDropdownMenu(row: Job) {
         </DropdownMenu>
     )
 }
+
+export default ActionsDropdownMenu;

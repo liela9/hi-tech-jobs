@@ -19,7 +19,7 @@ import { Tooltip,
   TooltipProvider, 
 } from '@/components/ui/tooltip'
 import { ROOT_PATH } from "@/lib/utils"
-import { actionsDropdownMenu } from './actionsDropdownMenu'
+import actionsDropdownMenu from './actionsDropdownMenu'
 
 
 function moveToViewedList(row: Job) {
