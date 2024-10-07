@@ -6,7 +6,6 @@ CREATE table IF NOT EXISTS all_jobs (
     city VARCHAR(255) NOT NULL,
     level VARCHAR(255) NOT NULL,
     url VARCHAR(500) NOT NULL,
-    updated VARCHAR(255) NOT NULL
 );        
 
 CREATE table IF NOT EXISTS submitted_jobs (
@@ -17,5 +16,5 @@ CREATE table IF NOT EXISTS submitted_jobs (
     city VARCHAR(255) NOT NULL,
     level VARCHAR(255) NOT NULL,
     url VARCHAR(500) NOT NULL,
-    submition_time VARCHAR(255) NOT NULL
+    submission_time VARCHAR(255) NOT NULL
 );

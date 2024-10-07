@@ -63,7 +63,6 @@ function transformData(data: any[]): Job[] {
     city: item.city?.toLowerCase(),
     level: item.level?.toLowerCase(),
     url: canonicalizeUrl(item.url),
-    updated: item.updated?.toLowerCase(),
   }));
 }
 

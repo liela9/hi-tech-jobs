@@ -10,30 +10,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
+import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 import { Tooltip, 
   TooltipContent, 
   TooltipTrigger, 
   TooltipProvider, 
 } from '@/components/ui/tooltip'
 import { ROOT_PATH } from "@/lib/utils"
+import { actionsDropdownMenu } from './actionsDropdownMenu'
 
 
 function moveToViewedList(row: Job) {
   console.log(typeof row)
-}
-  
-async function moveToSubmittedList(row: Job) {
-  const { title,  company, category, city, level, url, updated } = row
-
-  const res = await fetch(ROOT_PATH + 'jobs/submitted', {
-    method: 'POST',
-    body: JSON.stringify({
-      title, company, category, city, level, url, updated
-    })
-  })
-
-  await res.json()
 }
 
 export const columns: ColumnDef<Job>[] = [
@@ -111,24 +101,7 @@ export const columns: ColumnDef<Job>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => moveToViewedList(row.original)}
-            >Move to VIEWED</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => moveToSubmittedList(row.original)}
-            >Move to SUBMITTED</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+      return actionsDropdownMenu(row.original)
     },
   },
 ]
