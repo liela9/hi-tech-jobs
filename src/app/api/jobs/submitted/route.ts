@@ -9,7 +9,7 @@ export async function GET() {
     try {
         const result = await pool.query(
             `SELECT * FROM jobs
-            WHERE submission_time <> '0'`
+            WHERE application_status <> 'new'`
         );
 
         return NextResponse.json(result.rows);
@@ -24,7 +24,7 @@ export async function GET() {
 export async function DELETE(request: Request) {
     const data: Job = await request.json()
     const { id } = data
-    console.log('data: ', data)
+    // console.log('data: ', data)
 
     try {
         const query = `DELETE FROM jobs
