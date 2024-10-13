@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 
 import pool from '../../../lib/db';
-import { error } from "console";
 
-
+// TODO: change WHERE submission_time = '0'` to WHERE application_status = 'new'`
 // Get all new jobs
 export async function GET() {
     try {
@@ -14,19 +13,18 @@ export async function GET() {
                     level,
                     url
             FROM jobs
-            WHERE application_status = 'new'`
+            WHERE submission_time = '0'`
         );
-        return NextResponse.json(result.rows);
+        return NextResponse.json(result.rows, { status: 200 });
     } catch (error) {
-        console.error('Database error:', error);
-        return NextResponse.json({ error: 'Database error occurred:' + error }, { status: 500 });
+        console.error('Database error: ', error);
+        return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });
     }
 }
 
 // Update submission time
 export async function PUT(request: Request) {
     const data: Job = await request.json()
-    // console.log('data: ', data)
     const { id, submission_time } = data
 
     if ( !id ) {
@@ -56,8 +54,8 @@ export async function PUT(request: Request) {
         await pool.query(query, [submission_time, id]);
         return NextResponse.json({ message: 'Submittion time updated successfully' }, { status: 200 })
     } catch (error) {
-        console.error('Database error:', error);
-        return NextResponse.json({ error: 'Database error occurred:' + error }, { status: 500 });
+        console.error('Database error: ', error);
+        return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });
     }
 }
 
@@ -76,6 +74,6 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ message: 'Deleted successfully' }, { status: 200 })
     } catch (error) {
         console.error('Database error:', error);
-        return NextResponse.json({ error: 'Database error occurred:' + error }, { status: 500 });
+        return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });
     }
 }

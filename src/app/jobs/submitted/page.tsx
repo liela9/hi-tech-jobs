@@ -1,17 +1,10 @@
-import React from 'react'
-import JobsTable from '../../../components/jobs/jobsTable'
-import { ROOT_PATH } from '../../../lib/utils'
+import JobsList from '../../../components/JobsList'
 
 
-const SubmittedJobsPage = async () => {
-    const res = await fetch(ROOT_PATH + 'api/jobs/submitted')
-    const data = await res.json()
-  
-    return (
-      <div className='items-center w-full'>
-        <JobsTable {...data}></JobsTable>
-      </div>
-    )
+export default function SubmittedJobsPage() {
+  const url = '/api/jobs/submitted'
+
+  return (
+    <JobsList url={url}/>
+  );
 }
-
-export default SubmittedJobsPage

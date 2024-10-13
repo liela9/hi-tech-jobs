@@ -18,7 +18,7 @@ async function updateSubmissionTime(row: Job) {
     const { id } = row
     const currentTime = new Date().getTime()
 
-    const res = await fetch(ROOT_PATH + 'jobs', {
+    const res = await fetch(ROOT_PATH + '/jobs', {
         method: 'PUT',
         body: JSON.stringify({ id, currentTime })
     })

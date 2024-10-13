@@ -15,10 +15,10 @@ const CATEGORIES = [
   'support',
 ];
 
-const ROOT_PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
+const PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
 
 async function getData(filename: string) {
-  const response = await axios.get(`${ROOT_PATH}${filename}`);
+  const response = await axios.get(`${PATH}${filename}`);
   const content = response.data;
 
   fs.writeFileSync(path.join(OUTPUT_PATH, filename), content, 'utf-8');
