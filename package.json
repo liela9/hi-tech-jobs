@@ -7,7 +7,7 @@
     "env-test": "echo $DB_USER $DB_PASSWORD $DB_HOST $DB_PORT $DB_NAME",
     "dev": "next dev",
     "prebuild": "psql -U $DB_USER -h $DB_HOST -p $DB_PORT -d $DB_NAME -f db/initDB.sql",
-    "build": "next build && ts-node src/lib/initializeContent.ts",
+    "build": "next build && npx tsx src/lib/initializeContent.ts",
     "start": "next start",
     "lint": "next lint"
   },

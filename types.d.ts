@@ -6,5 +6,5 @@ type Job = {
     city: string;
     level: string,
     url: string;
-    updated: string;
+    submission_time: string;
 }

@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const ROOT_PATH = 'http://localhost:3000/'
+export const ROOT_PATH = 'http://localhost:3000'

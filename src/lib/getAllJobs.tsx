@@ -15,10 +15,10 @@ const CATEGORIES = [
   'support',
 ];
 
-const ROOT_PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
+const PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
 
 async function getData(filename: string) {
-  const response = await axios.get(`${ROOT_PATH}${filename}`);
+  const response = await axios.get(`${PATH}${filename}`);
   const content = response.data;
 
   fs.writeFileSync(path.join(OUTPUT_PATH, filename), content, 'utf-8');
@@ -63,7 +63,6 @@ function transformData(data: any[]): Job[] {
     city: item.city?.toLowerCase(),
     level: item.level?.toLowerCase(),
     url: canonicalizeUrl(item.url),
-    updated: item.updated?.toLowerCase(),
   }));
 }
 
@@ -88,5 +87,5 @@ export default async function fetchAllJobs(): Promise<Job[]> {
   filteredData = wordFilter(filteredData);
 
   // TODO: return ALL the data
-  return filteredData.slice(0, 5)
+  return filteredData.slice(0, 7)
 }
