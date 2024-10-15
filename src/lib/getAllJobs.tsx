@@ -87,5 +87,5 @@ export default async function fetchAllJobs(): Promise<Job[]> {
   filteredData = wordFilter(filteredData);
 
   // TODO: return ALL the data
-  return filteredData.slice(0, 7)
+  return filteredData.slice(0, 20)
 }

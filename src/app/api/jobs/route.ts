@@ -7,13 +7,8 @@ import pool from '../../../lib/db';
 export async function GET() {
     try {
         const result = await pool.query(
-            `SELECT title,
-                    company,
-                    city,
-                    level,
-                    url
-            FROM jobs
-            WHERE submission_time = '0'`
+            `SELECT * FROM jobs
+            WHERE application_status = 'new'`
         );
         return NextResponse.json(result.rows, { status: 200 });
     } catch (error) {

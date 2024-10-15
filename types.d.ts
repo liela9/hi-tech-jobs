@@ -7,4 +7,6 @@ type Job = {
     level: string,
     url: string;
     submission_time: string;
+    referrer: string;
+    status: string;
 }
