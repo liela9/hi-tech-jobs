@@ -1,7 +1,7 @@
 import JobsList from '../../components/JobsList'
 
 
-export default function SubmittedJobsPage() {
+export default function AllJobsPage() {
   const url = '/api/jobs'
 
   return (
