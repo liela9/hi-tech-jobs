@@ -8,7 +8,7 @@ export async function GET() {
     try {
         const result = await pool.query(
             `SELECT * FROM jobs
-            WHERE application_status <> 'new'`
+            WHERE submission_time <> '0'`
         );
 
         return NextResponse.json(result.rows, { status: 200 });

@@ -15,17 +15,19 @@ import { ROOT_PATH } from "@/lib/utils"
 
 
 async function updateSubmissionTime(row: Job) {
+    console.log('in handleSubmittedChange')
     const { id } = row
     const currentTime = new Date().getTime()
+    const status = 'submitted'
 
     const res = await fetch(ROOT_PATH + '/jobs', {
-        method: 'PUT',
-        body: JSON.stringify({ id, currentTime })
+        method: 'PATCH',
+        body: JSON.stringify({ id, currentTime, status })
     })
     await res.json()
 }
   
-function ActionsDropdownMenu(row: Job) {
+function ActionsMenu(row: Job) {
     const [submittedChecked, setSubmittedChecked] = React.useState(false)
 
     const handleSubmittedChange = async (checked: boolean) => {
@@ -47,7 +49,10 @@ function ActionsDropdownMenu(row: Job) {
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
               checked={submittedChecked}
-              onCheckedChange={handleSubmittedChange}
+              onCheckedChange={(isChecked) => {
+                handleSubmittedChange(isChecked)
+              }}
+              onSelect={() => console.log('onSelect')}
             >
               In Submitted List
             </DropdownMenuCheckboxItem>
@@ -56,4 +61,4 @@ function ActionsDropdownMenu(row: Job) {
     )
 }
 
-export default ActionsDropdownMenu;
+export default ActionsMenu;

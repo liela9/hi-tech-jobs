@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div>
           <Topbar/>
-          <main className="py-[12px] px-[32px] flex overflow-auto">{children}</main>
+          <main className="py-[12px] px-[32px] flex flex-col overflow-auto items-center">{children}</main>
         </div>
       </body>
     </html>

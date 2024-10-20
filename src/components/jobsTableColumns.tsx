@@ -6,8 +6,8 @@ import { Tooltip,
   TooltipTrigger, 
   TooltipProvider, 
 } from '@/components/ui/tooltip'
-import actionsDropdownMenu from './actionsDropdownMenu'
-
+import SubmittedActionsMenu from "./SubmittedActionsMenu"
+import ActionsMenu from "./ActionsMenu"
 
 export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
   if ( currentPath === '/jobs/submitted' ) {
@@ -49,13 +49,6 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         ),
       },
       {
-        accessorKey: "application_status",
-        header: "Status",
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("application_status")}</div>
-        ),
-      },
-      {
         accessorKey: "referrer",
         header: "Referrer",
         cell: ({ row }) => (
@@ -70,10 +63,17 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         )
       },
       {
+        accessorKey: "application_status",
+        header: "Status",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("application_status")}</div>
+        ),
+      },
+      {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-          return actionsDropdownMenu(row.original)
+          return SubmittedActionsMenu(row.original)
         }
       }
     ];
@@ -125,13 +125,6 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
       ),
     },
     {
-      accessorKey: "application_status",
-      header: "Status",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("application_status")}</div>
-      ),
-    },
-    {
       accessorKey: "url",
       header: "URL",
       cell: ({ row }) => (
@@ -155,7 +148,7 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        return actionsDropdownMenu(row.original)
+        return ActionsMenu(row.original)
       }
     }
   ];

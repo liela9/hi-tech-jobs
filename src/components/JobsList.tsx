@@ -32,8 +32,6 @@ export default function JobsList({ url }: JobsListProps) {
     }, []);
 
     return (
-      <div className='items-center w-full'>
-        <JobsTable jobs={jobs} currentPath={url.slice(4)} ></JobsTable>
-      </div>
+      <JobsTable jobs={jobs} currentPath={url.slice(4)} ></JobsTable>
     )
 }

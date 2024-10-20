@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import pool from '../../../lib/db';
 
-// TODO: change WHERE submission_time = '0'` to WHERE application_status = 'new'`
+
 // Get all new jobs
 export async function GET() {
     try {
@@ -18,9 +18,9 @@ export async function GET() {
 }
 
 // Update submission time
-export async function PUT(request: Request) {
+export async function PATCH(request: Request) {
     const data: Job = await request.json()
-    const { id, submission_time } = data
+    const { id, submission_time, status } = data
 
     if ( !id ) {
         return NextResponse.json({ error: 'Missing required data: id' }, { status: 422 })
@@ -43,10 +43,11 @@ export async function PUT(request: Request) {
     // update submission time as current time
     try {
         const query = `UPDATE jobs
-                        SET submission_time = ($1)
-                        WHERE id = ($2)`;
+                        SET submission_time = ($1), 
+                            application_status = ($2)
+                        WHERE id = ($3)`;
     
-        await pool.query(query, [submission_time, id]);
+        await pool.query(query, [submission_time, status, id]);
         return NextResponse.json({ message: 'Submittion time updated successfully' }, { status: 200 })
     } catch (error) {
         console.error('Database error: ', error);

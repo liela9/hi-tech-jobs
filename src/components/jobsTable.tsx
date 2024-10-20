@@ -55,8 +55,8 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const data = Object.values(jobs)
-  const columns = getColumns(currentPath)
+  const data = React.useMemo(() => Object.values(jobs), [jobs])
+  const columns = React.useMemo(() => getColumns(currentPath), [currentPath])
 
   const table = useReactTable({
     data,
@@ -83,7 +83,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex py-4">
         <Input
           placeholder="Filter by title..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -119,15 +119,15 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div>
-        <Card>
+      <div className="flex flex-col ">
+        <Card className="flex flex-col flex-1">
           <CardHeader>
             <CardTitle>Jobs</CardTitle>
             <CardDescription>
               View jobs and manage your submissions.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-y-auto">
             <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
