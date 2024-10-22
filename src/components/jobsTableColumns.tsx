@@ -6,8 +6,10 @@ import { Tooltip,
   TooltipTrigger, 
   TooltipProvider, 
 } from '@/components/ui/tooltip'
-import SubmittedActionsMenu from "./SubmittedActionsMenu"
+
 import ActionsMenu from "./ActionsMenu"
+import EditDialog from "./EditDialog"
+
 
 export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
   if ( currentPath === '/jobs/submitted' ) {
@@ -70,11 +72,11 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         ),
       },
       {
-        id: "actions",
+        id: "editing",
         enableHiding: false,
-        cell: ({ row }) => {
-          return SubmittedActionsMenu(row.original)
-        }
+        cell: ({ row }) => (
+          <EditDialog job={row.original}/>
+        )
       }
     ];
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react"
+import React, { useCallback } from "react"
 import {
   ColumnFiltersState,
   SortingState,
@@ -42,6 +42,7 @@ import { Tooltip,
   TooltipTrigger, 
   TooltipProvider, 
 } from '@/components/ui/tooltip'
+
 import { getColumns } from './jobsTableColumns'
 
 
@@ -58,6 +59,9 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const data = React.useMemo(() => Object.values(jobs), [jobs])
   const columns = React.useMemo(() => getColumns(currentPath), [currentPath])
 
+  const handleNextPage = useCallback(() => table.nextPage(), [])
+  const handlePreviousPage = useCallback(() => table.previousPage(), [])
+  
   const table = useReactTable({
     data,
     columns,
@@ -205,7 +209,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => table.previousPage()}
+                onClick={handlePreviousPage}
                 disabled={!table.getCanPreviousPage()}
               >
                 <ChevronLeft className="mr-2 h-4 w-4" />
@@ -214,7 +218,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => table.nextPage()}
+                onClick={handleNextPage}
                 disabled={!table.getCanNextPage()}
               >
                 Next

@@ -1,14 +1,13 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { JSXElementConstructor, useEffect, useState } from 'react'
 
-import JobsTable from './jobsTable';
 
+const JobsTable = React.lazy(() => import("./jobsTable")) 
 
 interface JobsListProps {
   url: string;
 }
-
 
 export default function JobsList({ url }: JobsListProps) {
     const [jobs, setJobs] = useState<Job[]>([]);

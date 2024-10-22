@@ -26,18 +26,18 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: 'Missing required data: id' }, { status: 422 })
     }
 
-    // check if job with id='id' exists
+    // check if job with id=id exists
     try {
         const query = `SELECT * FROM jobs
                         WHERE id = ($1)`;
     
         const result = await pool.query(query, [id]);
         if ( result.rows.length === 0 ) {
-            throw new Error()
+            return NextResponse.json({ error: `Job with id= ${id}`+` does not exist` }, { status: 404 });
         }
     } catch (error) {
         console.error('Database error:', error);
-        return NextResponse.json({ error: 'Job id does not exist' }, { status: 404 });
+        return NextResponse.json({ error: 'Wrong input: id' }, { status: 400 });
     }
 
     // update submission time as current time

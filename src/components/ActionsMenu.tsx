@@ -15,16 +15,19 @@ import { ROOT_PATH } from "@/lib/utils"
 
 
 async function updateSubmissionTime(row: Job) {
-    console.log('in handleSubmittedChange')
     const { id } = row
     const currentTime = new Date().getTime()
     const status = 'submitted'
 
-    const res = await fetch(ROOT_PATH + '/jobs', {
-        method: 'PATCH',
-        body: JSON.stringify({ id, currentTime, status })
-    })
-    await res.json()
+    try {
+      const res = await fetch(ROOT_PATH + '/jobs', {
+          method: 'PATCH',
+          body: JSON.stringify({ id, currentTime, status })
+      })
+      await res.json()
+    } catch (error) {
+      console.log(`Error message: `, error);
+    }
 }
   
 function ActionsMenu(row: Job) {
