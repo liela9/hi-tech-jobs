@@ -14,7 +14,7 @@ import {
 import { ROOT_PATH } from "@/lib/utils"
 
 
-async function updateSubmissionTime(row: Job) {
+export async function updateSubmissionTime(row: Job) {
     const { id } = row
     const currentTime = new Date().getTime()
     const status = 'submitted'

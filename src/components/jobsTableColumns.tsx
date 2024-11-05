@@ -40,21 +40,21 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => (
-          <div>{row.getValue("title")}</div>
+          <div className="capitalize">{row.getValue("title")}</div>
         ),
       },
       {
         accessorKey: "company",
         header: "Company",
         cell: ({ row }) => (
-          <div>{row.getValue("company")}</div>
+          <div className="capitalize">{row.getValue("company")}</div>
         ),
       },
       {
         accessorKey: "referrer",
         header: "Referrer",
         cell: ({ row }) => (
-          <div>{row.getValue("referrer")}</div>
+          <div className="capitalize">{row.getValue("referrer")}</div>
         )
       },
       {
@@ -109,21 +109,21 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
       accessorKey: "title",
       header: "Title",
       cell: ({ row }) => (
-        <div>{row.getValue("title")}</div>
+        <div className="capitalize">{row.getValue("title")}</div>
       ),
     },
     {
       accessorKey: "company",
       header: "Company",
       cell: ({ row }) => (
-        <div>{row.getValue("company")}</div>
+        <div className="capitalize">{row.getValue("company")}</div>
       ),
     },
     {
       accessorKey: "city",
       header: "City",
       cell: ({ row }) => (
-        <div>{row.getValue("city")}</div>
+        <div className="capitalize">{row.getValue("city")}</div>
       ),
     },
     {

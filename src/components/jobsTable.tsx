@@ -56,9 +56,10 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+
   const data = React.useMemo(() => Object.values(jobs), [jobs])
   const columns = React.useMemo(() => getColumns(currentPath), [currentPath])
-
+  
   const handleNextPage = useCallback(() => table.nextPage(), [])
   const handlePreviousPage = useCallback(() => table.previousPage(), [])
   

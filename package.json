@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "env-test": "echo $DB_USER $DB_PASSWORD $DB_HOST $DB_PORT $DB_NAME",
-    "dev": "next dev",
+    "dev": "npx tsx server.ts",
     "prebuild": "psql -U $DB_USER -h $DB_HOST -p $DB_PORT -d $DB_NAME -f db/initDB.sql",
     "build": "next build && npx tsx src/lib/initializeContent.ts",
-    "start": "next start",
+    "start": "NODE_ENV=production npx tsx server.ts",
     "lint": "next lint"
   },
   "dependencies": {
@@ -32,6 +32,8 @@
     "pg": "^8.13.0",
     "react": "^18",
     "react-dom": "^18",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2"

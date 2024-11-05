@@ -1,8 +1,10 @@
 'use client'
 
-import React, { JSXElementConstructor, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import io from 'socket.io-client'
 
-
+// TODO: replace 
+const socket = io("http://localhost:3000");
 const JobsTable = React.lazy(() => import("./jobsTable")) 
 
 interface JobsListProps {
@@ -10,27 +12,20 @@ interface JobsListProps {
 }
 
 export default function JobsList({ url }: JobsListProps) {
-    const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
 
-    useEffect(() => {
-      const fetchJobs = async () => {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error('Failed to fetch jobs');
-          }
-          const data = await response.json();
-          setJobs(data);
-        } catch (error) {
-            console.error(error);
-        }
-  
-      }
+  useEffect(() => {
+    // Listen for updates from the WebSocket
+    socket.on("jobsUpdated", (updatedJobs) => {
+      setJobs(updatedJobs);
+    });
+    
+    return () => {
+      socket.off("jobsUpdated");
+    };
+  }, []);
 
-      fetchJobs();
-    }, []);
-
-    return (
-      <JobsTable jobs={jobs} currentPath={url.slice(4)} ></JobsTable>
-    )
+  return (
+    <JobsTable jobs={jobs} currentPath={url.slice(4)} ></JobsTable>
+  )
 }
