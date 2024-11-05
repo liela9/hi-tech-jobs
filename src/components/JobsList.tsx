@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import io from 'socket.io-client'
 
-// TODO: replace 
-const socket = io("http://localhost:3000");
+import { socket } from "../socket";
+
 const JobsTable = React.lazy(() => import("./jobsTable")) 
 
 interface JobsListProps {
@@ -17,6 +16,7 @@ export default function JobsList({ url }: JobsListProps) {
   useEffect(() => {
     // Listen for updates from the WebSocket
     socket.on("jobsUpdated", (updatedJobs) => {
+      console.log(updatedJobs)
       setJobs(updatedJobs);
     });
     

@@ -24,6 +24,9 @@ app.prepare().then(() => {
     });
   });
 
+  // TODO: Data Change Detection
+  //       add here a listener that responds to database changes (e.g., using database triggers or polling).
+
   httpServer
     .once("error", (err) => {
       console.error(err);
