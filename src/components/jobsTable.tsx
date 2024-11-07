@@ -90,10 +90,10 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
     <div className="w-full">
       <div className="flex py-4">
         <Input
-          placeholder="Filter by title..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter..."
+          value={(table.getState().globalFilter as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.setGlobalFilter(event.target.value)
           }
           className="max-w-sm"
         />
