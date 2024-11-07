@@ -21,8 +21,6 @@ import { Label } from "@/components/ui/label"
 import { Edit } from "lucide-react"
 
 import { ROOT_PATH } from "@/lib/utils"
-import { stat } from "fs"
-
 
 const statuses = ['New', 'Submitted', 'Passed-first-assessment', 'Passed-second-assessment', 'Passed-third-assessment', 'Hired']
 

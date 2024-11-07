@@ -34,7 +34,6 @@ function ActionsMenu(row: Job) {
     const [submittedChecked, setSubmittedChecked] = React.useState(false)
 
     const handleSubmittedChange = async (checked: boolean) => {
-        console.log(('in handleSubmittedChange'))
         updateSubmissionTime(row)
         setSubmittedChecked(checked) 
     } 
@@ -55,7 +54,6 @@ function ActionsMenu(row: Job) {
               onCheckedChange={(isChecked) => {
                 handleSubmittedChange(isChecked)
               }}
-              onSelect={() => console.log('onSelect')}
             >
               In Submitted List
             </DropdownMenuCheckboxItem>

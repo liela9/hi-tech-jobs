@@ -1,4 +1,30 @@
-import { io } from 'socket.io-client'
+import { useState, useEffect } from 'react';
+import { Socket, io } from 'socket.io-client';
 
-// TODO: replace with consts
-export const socket = io();
+
+const useWebSocket = () => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    const socketio = io('http://localhost:3000'); 
+    setSocket(socketio);
+
+    socketio.on('connect', () => {
+      console.log('WebSocket connected');
+    });
+
+    socketio.on('disconnect', () => {
+      console.log('WebSocket disconnected');
+    });
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
+
+  return { socket };
+};
+
+export default useWebSocket;

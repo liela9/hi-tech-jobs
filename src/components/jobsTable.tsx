@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback } from "react"
+import React, { useCallback, useState, useMemo } from "react"
 import {
   ColumnFiltersState,
   SortingState,
@@ -52,13 +52,13 @@ interface JobsTableProps {
 }
 
 const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
-  const data = React.useMemo(() => Object.values(jobs), [jobs])
-  const columns = React.useMemo(() => getColumns(currentPath), [currentPath])
+  const data = useMemo(() => Object.values(jobs), [jobs])
+  const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
   const handleNextPage = useCallback(() => table.nextPage(), [])
   const handlePreviousPage = useCallback(() => table.previousPage(), [])
