@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "db/initDB.ts", "src/app/api/jobs/handler.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "db/initDB.ts", "src/app/api/jobs/handler.ts", "src/listeners/notifications.js"],
   "exclude": ["node_modules"]
 }

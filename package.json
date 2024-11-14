@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "env-test": "echo $DB_USER $DB_PASSWORD $DB_HOST $DB_PORT $DB_NAME",
-    "dev": "npx tsx server.ts",
+    "dev": "npx tsx server.ts && node src/listeners/notifications.js",
     "prebuild": "psql -U $DB_USER -h $DB_HOST -p $DB_PORT -d $DB_NAME -f db/initDB.sql",
     "build": "next build && npx tsx src/lib/initializeContent.ts",
     "start": "NODE_ENV=production npx tsx server.ts",
