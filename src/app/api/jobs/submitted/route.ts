@@ -26,7 +26,7 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: 'Missing required data: id' }, { status: 422 })
     }
 
-    // check if job with id=id exists
+    // check if job with the given id exists
     try {
         const query = `SELECT * FROM jobs
                         WHERE id = ($1)`;
@@ -40,22 +40,24 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: 'Wrong input: id' }, { status: 400 });
     }
 
-    // update referrer and status if they are not empty
+    // update referrer and status if the given are not empty
     try {
         const query = `UPDATE jobs
                         SET 
-                            referrer = CASE
-                                WHEN ($1) != '' THEN ($1)
+                            referrer = 
+                            CASE
+                                WHEN ($1) <> '' THEN ($1)
                                 ELSE referrer
                             END,
-                            application_status = ($2)
-                                WHEN ($2) != '' THEN ($2)
+                            application_status = 
+                            CASE
+                                WHEN ($2) <> '' THEN ($2)
                                 ELSE application_status
                             END
                         WHERE id = ($3)`;
     
         await pool.query(query, [referrer, status, id]);
-        return NextResponse.json({ message: 'Submittion time updated successfully' }, { status: 200 })
+        return NextResponse.json({ message: 'Data updated successfully' }, { status: 200 })
     } catch (error) {
         console.error('Database error: ', error);
         return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });

@@ -29,13 +29,12 @@ export async function updateSubmissionTime(row: Job) {
     const { id } = row
     const currentTime = getTime()
     const status = 'submitted'
-
+    
     try {
-      const res = await fetch(ROOT_PATH + '/jobs', {
+      const res = await fetch(`${ROOT_PATH}/api/jobs`, {
           method: 'PATCH',
-          body: JSON.stringify({ id, currentTime, status })
+          body: JSON.stringify({ id: id, submission_time: currentTime, status: status })
       })
-      await res.json()
     } catch (error) {
       console.log(`Error message: `, error);
     }

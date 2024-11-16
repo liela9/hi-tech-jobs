@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -30,20 +30,19 @@ interface EditDialogProps {
 
 export async function updateJob(jobId: string, referrerName: string, status: string) {
   try {
-    const res = await fetch(ROOT_PATH + '/jobs/submitted', {
-        method: 'PATCH',
-        body: JSON.stringify({ jobId, referrerName, status })
+    const res = await fetch(`${ROOT_PATH}/api/jobs/submitted`, {
+      method: 'PATCH',
+      body: JSON.stringify({ id: jobId, referrer: referrerName, status: status })
     })
-    await res.json()
   } catch (error) {
     console.log(`Error message: `, error);
   }
 }
 
 function EditDialog({ job }: EditDialogProps) {
-  const [referrerName, setReferrerName] = React.useState("")
-  const [status, setStatus] = React.useState("")
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [referrerName, setReferrerName] = useState("")
+  const [status, setStatus] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReferrerName(event.target.value)
@@ -53,10 +52,10 @@ function EditDialog({ job }: EditDialogProps) {
     setStatus(value)
   }
 
-  const handleSaveChanges = useCallback(() => {
+  const handleSaveChanges = () => {
     updateJob(job.id, referrerName, status)
     setIsOpen(false)
-  }, [job, referrerName, status])
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
