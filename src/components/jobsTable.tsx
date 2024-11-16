@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronDown, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronDown, ExternalLink, ChevronLeft, ChevronRight, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -44,6 +44,7 @@ import { Tooltip,
 } from '@/components/ui/tooltip'
 
 import { getColumns } from './jobsTableColumns'
+import { ROOT_PATH } from "@/lib/utils"
 
 
 interface JobsTableProps {
@@ -51,17 +52,37 @@ interface JobsTableProps {
   currentPath: string;
 }
 
+async function setAsDeleted(jobs: Job[]) {
+  for (const element of jobs) {
+    try {
+      await fetch(`${ROOT_PATH}/api/jobs`, {
+          method: 'DELETE',
+          body: JSON.stringify({ id: element.id })
+      })
+    } catch (error) {
+      console.log(`Error message: `, error);
+    }
+  }
+}
+
 const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "submission_time", desc: true }])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>({})
 
   const data = useMemo(() => Object.values(jobs), [jobs])
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
   const handleNextPage = useCallback(() => table.nextPage(), [])
   const handlePreviousPage = useCallback(() => table.previousPage(), [])
+
+  const handleDeleteRows = () => {
+    const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
+    const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
+  
+    setAsDeleted(selectedRowsData)
+    }
   
   const table = useReactTable({
     data,
@@ -97,6 +118,16 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
           }
           className="max-w-sm"
         />
+          {Object.keys(rowSelection).length > 0 && (
+            <Button
+              variant="destructive"
+              className="ml-4"
+              onClick={handleDeleteRows}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
+            </Button>
+          )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
