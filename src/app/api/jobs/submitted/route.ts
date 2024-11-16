@@ -2,13 +2,12 @@ import { NextResponse } from "next/server";
 
 import pool from '../../../../lib/db';
 
-// TODO: change WHERE submission_time <> '0'` to WHERE application_status <> 'new'`
 // Get all submitted jobs
 export async function GET() {
     try {
         const result = await pool.query(
             `SELECT * FROM jobs
-            WHERE submission_time <> '0'`
+            WHERE application_status <> 'new'`
         );
 
         return NextResponse.json(result.rows, { status: 200 });

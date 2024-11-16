@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -14,9 +13,21 @@ import {
 import { ROOT_PATH } from "@/lib/utils"
 
 
+function getTime() {
+  const currentDate = new Date()
+  const year = currentDate.getFullYear()
+  const month = currentDate.getMonth() + 1
+  const day = currentDate.getDate()
+  const hours = currentDate.getHours()
+  const minutes = currentDate.getMinutes()
+  const seconds = currentDate.getSeconds()
+
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`
+}
+
 export async function updateSubmissionTime(row: Job) {
     const { id } = row
-    const currentTime = new Date().getTime()
+    const currentTime = getTime()
     const status = 'submitted'
 
     try {

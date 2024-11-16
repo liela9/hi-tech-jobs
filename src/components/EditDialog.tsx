@@ -41,28 +41,31 @@ export async function updateJob(jobId: string, referrerName: string, status: str
 }
 
 function EditDialog({ job }: EditDialogProps) {
-  const [referrerName, setReferrerName] = React.useState("");
+  const [referrerName, setReferrerName] = React.useState("")
+  const [status, setStatus] = React.useState("")
+  const [isOpen, setIsOpen] = React.useState(false)
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReferrerName(event.target.value)
   }
 
-  const [status, setStatus] = React.useState("")
   const handleValueChange = (value: string) => {
     setStatus(value)
   }
 
   const handleSaveChanges = useCallback(() => {
     updateJob(job.id, referrerName, status)
-  }, [job])
+    setIsOpen(false)
+  }, [job, referrerName, status])
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="link">
           <Edit className="h-4 w-4"/>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
           <DialogTitle>Edit Job Details</DialogTitle>
           <DialogDescription>
