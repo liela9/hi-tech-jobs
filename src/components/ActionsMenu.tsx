@@ -7,7 +7,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
 
 import { ROOT_PATH } from "@/lib/utils"
@@ -31,7 +30,7 @@ export async function updateSubmissionTime(row: Job) {
     const status = 'submitted'
     
     try {
-      const res = await fetch(`${ROOT_PATH}/api/jobs`, {
+      await fetch(`${ROOT_PATH}/api/jobs`, {
           method: 'PATCH',
           body: JSON.stringify({ id: id, submission_time: currentTime, status: status })
       })
@@ -41,13 +40,6 @@ export async function updateSubmissionTime(row: Job) {
 }
   
 function ActionsMenu(row: Job) {
-    const [submittedChecked, setSubmittedChecked] = React.useState(false)
-
-    const handleSubmittedChange = async (checked: boolean) => {
-        updateSubmissionTime(row)
-        setSubmittedChecked(checked) 
-    } 
-
     return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -56,17 +48,10 @@ function ActionsMenu(row: Job) {
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem
-              checked={submittedChecked}
-              onCheckedChange={(isChecked) => {
-                handleSubmittedChange(isChecked)
-              }}
-            >
-              In Submitted List
-            </DropdownMenuCheckboxItem>
+            <Button variant='ghost' onClick={() => {updateSubmissionTime(row)}}>Submitted</Button>
           </DropdownMenuContent>
         </DropdownMenu>
     )

@@ -151,7 +151,8 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
       enableHiding: false,
       cell: ({ row }) => {
         return ActionsMenu(row.original)
-      }
+      },
+      enableSorting: true,
     }
   ];
 }

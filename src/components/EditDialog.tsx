@@ -30,7 +30,7 @@ interface EditDialogProps {
 
 export async function updateJob(jobId: string, referrerName: string, status: string) {
   try {
-    const res = await fetch(`${ROOT_PATH}/api/jobs/submitted`, {
+    await fetch(`${ROOT_PATH}/api/jobs/submitted`, {
       method: 'PATCH',
       body: JSON.stringify({ id: jobId, referrer: referrerName, status: status })
     })
