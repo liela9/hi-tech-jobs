@@ -22,7 +22,7 @@ import { Edit } from "lucide-react"
 
 import { ROOT_PATH } from "@/lib/utils"
 
-const statuses = ['New', 'Submitted', 'Passed-first-assessment', 'Passed-second-assessment', 'Passed-third-assessment', 'Hired']
+const statuses = ['New', 'Applied', 'Interview', 'Offer', 'Hired']
 
 interface EditDialogProps {
   job: Job;

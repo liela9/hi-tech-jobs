@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { MoreHorizontal } from "lucide-react"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -9,29 +8,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-    DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-  
 
-const statuses = ['New', 'Submitted', 'Passed-first-assessment', 'Passed-second-assessment', 'Passed-third-assessment', 'Hired']
 
 function SubmittedActionsMenu(row: Job) {
   const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);

@@ -27,7 +27,7 @@ function getTime() {
 export async function updateSubmissionTime(row: Job) {
     const { id } = row
     const currentTime = getTime()
-    const status = 'submitted'
+    const status = 'applied'
     
     try {
       await fetch(`${ROOT_PATH}/api/jobs`, {

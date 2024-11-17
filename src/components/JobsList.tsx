@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Socket, io } from 'socket.io-client';
+import { io } from 'socket.io-client'
 
 const JobsTable = React.lazy(() => import("./jobsTable")) 
 

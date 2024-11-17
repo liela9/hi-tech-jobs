@@ -11,8 +11,8 @@ const CATEGORIES = [
   // 'hardware',
   // 'qa',
   // 'security',
-  // 'software',
-  'support',
+  'software',
+  // 'support',
 ];
 
 const PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';

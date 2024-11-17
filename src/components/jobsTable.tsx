@@ -44,25 +44,11 @@ import { Tooltip,
 } from '@/components/ui/tooltip'
 
 import { getColumns } from './jobsTableColumns'
-import { ROOT_PATH } from "@/lib/utils"
-
+import { setAsDeleted } from "@/app/api/jobs/deleted/handler"
 
 interface JobsTableProps {
   jobs: Job[];
   currentPath: string;
-}
-
-async function setAsDeleted(jobs: Job[]) {
-  for (const element of jobs) {
-    try {
-      await fetch(`${ROOT_PATH}/api/jobs`, {
-          method: 'DELETE',
-          body: JSON.stringify({ id: element.id })
-      })
-    } catch (error) {
-      console.log(`Error message: `, error);
-    }
-  }
 }
 
 const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
@@ -158,7 +144,10 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
       <div className="flex flex-col ">
         <Card className="flex flex-col flex-1">
           <CardHeader>
-            <CardTitle>Jobs</CardTitle>
+            {currentPath === '/jobs' ? <CardTitle>Jobs</CardTitle> 
+            : currentPath === '/jobs/submitted' ? <CardTitle>Submitted Jobs</CardTitle> 
+            : <CardTitle>Deleted Jobs</CardTitle> 
+            }
             <CardDescription>
               View jobs and manage your submissions.
             </CardDescription>
