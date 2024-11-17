@@ -3,7 +3,7 @@ import next from "next"
 import { Server } from "socket.io"
 
 import { getJobs } from '@/app/api/jobs/handler'
-import getSubmittedJobs from "@/app/api/jobs/submitted/handler"
+import { getSubmittedJobs } from "@/app/api/jobs/submitted/handler"
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";

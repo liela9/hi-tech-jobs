@@ -44,11 +44,25 @@ import { Tooltip,
 } from '@/components/ui/tooltip'
 
 import { getColumns } from './jobsTableColumns'
-import { setAsDeleted } from "@/app/api/jobs/deleted/handler"
+import { ROOT_PATH } from "@/lib/utils" 
 
 interface JobsTableProps {
   jobs: Job[];
   currentPath: string;
+}
+
+// Set given jobs as deleted
+export async function setAsDeleted(jobs: Job[]) {
+  for (const element of jobs) {
+    try {
+      await fetch(`${ROOT_PATH}/api/jobs/deleted`, {
+          method: 'DELETE',
+          body: JSON.stringify({ id: element.id })
+      })
+    } catch (error) {
+      console.log(`Error message: `, error);
+    }
+  }
 }
 
 const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {

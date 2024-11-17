@@ -1,6 +1,5 @@
 import { GET } from './route'
 
-
 export async function getJobs() {
   try {
       const response = await GET()
