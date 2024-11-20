@@ -7,6 +7,8 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
+    "target": "es6",
+    "outDir": "./dist",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -21,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "db/initDB.ts", "src/app/api/jobs/handler.ts", "src/listeners/notifications.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "db/initDB.ts", "src/app/api/jobs/handler.ts", "src/listeners/notifications.ts"],
   "exclude": ["node_modules"]
 }

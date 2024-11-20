@@ -65,7 +65,7 @@ export default function JobsList({ url }: JobsListProps) {
     return () => {
       socket.off("job-update");
     };
-  }, []);
+  }, [url]);
 
   
   if ( url === '/api/jobs/deleted') {

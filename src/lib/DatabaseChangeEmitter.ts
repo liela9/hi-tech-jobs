@@ -1,12 +1,14 @@
-import { Client } from 'pg';
 import { EventEmitter } from 'events';
+import pg from 'pg';
+
+const { Client } = pg
 
 interface DatabaseConfig {
-  host: string;
-  port: number;
-  database: string;
-  user: string;
-  password: string;
+  host: string | undefined;
+  port: number | undefined;
+  database: string | undefined;
+  user: string | undefined;
+  password: string | undefined;
 }
 
 interface ChangeEvent {
@@ -27,9 +29,9 @@ export declare interface IDatabaseChangeEmitter {
 }
 
 export class DatabaseChangeEmitter extends EventEmitter {
-  private readonly client: Client;
-  private readonly listenerClient: Client;
-  private isConnected: boolean;
+  private readonly client
+  private readonly listenerClient
+  private isConnected
 
   constructor(connectionConfig: DatabaseConfig) {
     super();

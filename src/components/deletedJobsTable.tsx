@@ -74,13 +74,10 @@ const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const data = useMemo(() => Object.values(jobs), [jobs])
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
-  const handleNextPage = useCallback(() => table.nextPage(), [])
-  const handlePreviousPage = useCallback(() => table.previousPage(), [])
-
   const handleRestoreRows = () => {
     const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
     const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
-  
+    
     setAsNotDeleted(selectedRowsData)
   }
   
@@ -89,10 +86,10 @@ const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
     data,
     columns,
     initialState: {
-        pagination: {
-          pageSize: PAGE_SIZE,
-        },
+      pagination: {
+        pageSize: PAGE_SIZE,
       },
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -108,6 +105,9 @@ const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
       rowSelection,
     }
   })
+
+  const handleNextPage = useCallback(() => table.nextPage(), [table])
+  const handlePreviousPage = useCallback(() => table.previousPage(), [table])
 
   if (!data || !table) {
     return <div>Loading...</div>;
