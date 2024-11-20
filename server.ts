@@ -19,14 +19,14 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on('connection', async (socket) => {
-    console.log('Client connected (in server.ts)');
+    console.log('Client connected');
 
     socket.emit('get-all-jobs', await getJobs());
     socket.emit('get-submitted-jobs', await getSubmittedJobs());
     socket.emit('get-deleted-jobs', await getDeletedJobs());
     
     socket.on('disconnect', () => {
-      console.log('Client disconnected (in server.ts)');
+      console.log('Client disconnected');
     });
   });
 
@@ -46,8 +46,9 @@ app.prepare().then(() => {
 
       // Broadcast changes to all connected clients
       dbEmitter.on("change", (change) => {
-        console.log("Broadcasting change: ", change);
+        // console.log("Broadcasting change: ", change)
         io.emit("job-update", change); // Emit the change event to all clients
+        io.emit("force-refresh")
       });
 
       // Handle database watcher errors

@@ -39,7 +39,7 @@ export default function JobsList({ url }: JobsListProps) {
     });
 
     socket.on("job-update", (update) => {
-      console.log("Received update:", update);
+      // console.log("Received update:", update);
 
       // Handle real-time update logic
       if (update.operation === "INSERT") {
@@ -53,15 +53,17 @@ export default function JobsList({ url }: JobsListProps) {
       } else if (update.operation === "DELETE") {
         setJobs((prevJobs) =>
           prevJobs.filter((job) => job.id !== update.data.id)
-        );
-      }
-    });
-
+      );
+    }});
+    
+    socket.on('force-refresh', () => {
+      window.location.reload();
+    });    
+    
     socket.on('disconnect', () => {
       console.log('WebSocket disconnected');
     });
 
-    
     return () => {
       socket.off("job-update");
     };
