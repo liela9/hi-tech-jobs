@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronDown, ExternalLink, ChevronLeft, ChevronRight, Trash2 } from "lucide-react"
+import { ChevronDown, ExternalLink, ChevronLeft, ChevronRight, FolderOutput } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -51,12 +51,12 @@ interface JobsTableProps {
   currentPath: string;
 }
 
-// Set given jobs as deleted
-export async function setAsDeleted(jobs: Job[]) {
+// Set given jobs as NOT deleted
+export async function setAsNotDeleted(jobs: Job[]) {
   for (const element of jobs) {
     try {
       await fetch(`${ROOT_PATH}/api/jobs/deleted`, {
-          method: 'DELETE',
+          method: 'PATCH',
           body: JSON.stringify({ id: element.id })
       })
     } catch (error) {
@@ -65,7 +65,7 @@ export async function setAsDeleted(jobs: Job[]) {
   }
 }
 
-const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
+const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "submission_time", desc: true }])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -74,11 +74,14 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const data = useMemo(() => Object.values(jobs), [jobs])
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
-  const handleDeleteRows = () => {
+  const handleNextPage = useCallback(() => table.nextPage(), [])
+  const handlePreviousPage = useCallback(() => table.previousPage(), [])
+
+  const handleRestoreRows = () => {
     const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
     const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
-    
-    setAsDeleted(selectedRowsData)
+  
+    setAsNotDeleted(selectedRowsData)
   }
   
   const PAGE_SIZE = 8
@@ -86,10 +89,10 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
     data,
     columns,
     initialState: {
-      pagination: {
-        pageSize: PAGE_SIZE,
+        pagination: {
+          pageSize: PAGE_SIZE,
+        },
       },
-    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -104,11 +107,8 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
       columnVisibility,
       rowSelection,
     }
-  })  
-  
-  const handleNextPage = useCallback(() => table.nextPage(), [table])
-  const handlePreviousPage = useCallback(() => table.previousPage(), [table])
-  
+  })
+
   if (!data || !table) {
     return <div>Loading...</div>;
   }
@@ -126,12 +126,12 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
         />
           {Object.keys(rowSelection).length > 0 && (
             <Button
-              variant="destructive"
+              variant="outline"
               className="ml-4"
-              onClick={handleDeleteRows}
+              onClick={handleRestoreRows}
             >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
+            <FolderOutput className="mr-2 h-4 w-4"/>
+              Restore
             </Button>
           )}
         <DropdownMenu>
@@ -274,4 +274,4 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   )
 }
 
-export default JobsTable
+export default DeletedJobsTable

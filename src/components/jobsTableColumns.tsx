@@ -12,7 +12,7 @@ import EditDialog from "./EditDialog"
 
 
 export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
-  if ( currentPath === '/jobs/submitted' ) {
+    if ( currentPath === '/jobs/submitted' ) {
     return [
       {
         id: "select",
@@ -79,6 +79,75 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         )
       }
     ];
+  }
+
+  if ( currentPath === '/jobs/deleted' ) {
+    return [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "title",
+        header: "Title",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("title")}</div>
+        ),
+      },
+      {
+        accessorKey: "company",
+        header: "Company",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("company")}</div>
+        ),
+      },
+      {
+        accessorKey: "city",
+        header: "City",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("city")}</div>
+        ),
+      },
+      {
+        accessorKey: "referrer",
+        header: "Referrer",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("referrer")}</div>
+        )
+      },
+      {
+        accessorKey: "submission_time",
+        header: "Submission Time",
+        cell: ({ row }) => (
+          <div>{row.getValue("submission_time")}</div>
+        )
+      },
+      {
+        accessorKey: "application_status",
+        header: "Status",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("application_status")}</div>
+        ),
+      },
+    ]
   }
 
   // currentPath === '/jobs'
