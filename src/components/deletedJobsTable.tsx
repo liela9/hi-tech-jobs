@@ -61,7 +61,7 @@ export async function setAsNotDeleted(jobs: Job[]) {
 }
 
 const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
-  const [sorting, setSorting] = useState<SortingState>([{ id: "submission_time", desc: true }])
+  const [sorting, setSorting] = useState<SortingState>([{ id: "submition_time", desc: true }])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>({})
@@ -119,7 +119,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
             : <CardTitle>Deleted Jobs</CardTitle> 
             }
             <CardDescription>
-              View jobs and manage your submissions.
+              View jobs and manage your submitions.
             </CardDescription>
           </CardHeader>
           <CardContent className="overflow-y-auto">

@@ -4,13 +4,17 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Tooltip, 
+    TooltipContent, 
+    TooltipTrigger, 
+    TooltipProvider, 
+} from '@/components/ui/tooltip'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ChevronDown, Trash2 } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 
-import { ROOT_PATH } from "@/lib/utils" 
-
+import { ROOT_PATH } from "@/lib/utils"
 
 interface TableTopbarProps {
     table: Table<Job>;
@@ -39,27 +43,54 @@ const handleDeleteRows = (rowSelection: {[key: string]: boolean}, data: Job[]) =
     setAsDeleted(selectedRowsData)
 }
 
+async function handleRefreshData() {
+    try {
+        await fetch(`${ROOT_PATH}/api/jobs`, {
+            method: 'POST',
+        })
+    } catch (error) {
+        console.log(`Error message: `, error);
+    }
+}
+
 function TableTopbar({table, rowSelection, data}: TableTopbarProps) {
     return (
-        <div className="flex py-4">
-            <Input
-            placeholder="Filter..."
-            value={(table.getState().globalFilter as string) ?? ""}
-            onChange={(event) =>
-                table.setGlobalFilter(event.target.value)
-            }
-            className="max-w-sm"
-            />
-            {Object.keys(rowSelection).length > 0 && (
-                <Button
-                variant="destructive"
-                className="ml-4"
-                onClick={() => handleDeleteRows(rowSelection, data)}
-                >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
-                </Button>
-            )}
+        <div className="flex py-4 justify-between">
+            <div className="flex space-x-4 flex-initial w-full">
+                <Input
+                placeholder="Filter..."
+                value={(table.getState().globalFilter as string) ?? ""}
+                onChange={(event) =>
+                    table.setGlobalFilter(event.target.value)
+                }
+                className="max-w-sm"
+                />
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>        
+                            <Button 
+                            variant={"secondary"}
+                            onClick={handleRefreshData}
+                            >
+                                New Posted Jobs
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Pull new posted jobs to your main list</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                {Object.keys(rowSelection).length > 0 && (
+                    <Button
+                    variant="destructive"
+                    className="ml-4"
+                    onClick={() => handleDeleteRows(rowSelection, data)}
+                    >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                    </Button>
+                )}
+            </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="ml-auto">

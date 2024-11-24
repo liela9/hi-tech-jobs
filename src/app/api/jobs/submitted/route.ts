@@ -27,7 +27,7 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: 'Missing required data: id' }, { status: 422 })
     }
 
-    // check if job with the given id exists
+    // checks if job with the given id exists
     try {
         const query = `SELECT * FROM jobs
                         WHERE id = ($1)`;

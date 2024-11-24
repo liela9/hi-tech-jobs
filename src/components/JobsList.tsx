@@ -57,7 +57,7 @@ export default function JobsList({ url }: JobsListProps) {
     }});
     
     socket.on('force-refresh', () => {
-      window.location.reload();
+      // window.location.reload();
     });    
     
     socket.on('disconnect', () => {

@@ -9,9 +9,9 @@ const CATEGORIES = [
   // 'data-science',
   // 'frontend',
   // 'hardware',
-  // 'qa',
+  'qa',
   // 'security',
-  'software',
+  // 'software',
   // 'support',
 ];
 

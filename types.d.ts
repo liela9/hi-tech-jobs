@@ -6,7 +6,7 @@ type Job = {
     city: string;
     level: string,
     url: string;
-    submission_time: string;
+    submition_time: string;
     referrer: string;
     status: string;
 }

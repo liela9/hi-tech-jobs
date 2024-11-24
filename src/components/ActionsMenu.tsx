@@ -24,7 +24,7 @@ function getTime() {
   return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`
 }
 
-export async function updateSubmissionTime(row: Job) {
+export async function updateSubmitionTime(row: Job) {
     const { id } = row
     const currentTime = getTime()
     const status = 'applied'
@@ -32,7 +32,7 @@ export async function updateSubmissionTime(row: Job) {
     try {
       await fetch(`${ROOT_PATH}/api/jobs`, {
           method: 'PATCH',
-          body: JSON.stringify({ id: id, submission_time: currentTime, status: status })
+          body: JSON.stringify({ id: id, submition_time: currentTime, status: status })
       })
     } catch (error) {
       console.log(`Error message: `, error);
@@ -51,7 +51,7 @@ function ActionsMenu(row: Job) {
           <DropdownMenuContent >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Button variant='ghost' onClick={() => {updateSubmissionTime(row)}}>Submitted</Button>
+            <Button variant='ghost' onClick={() => {updateSubmitionTime(row)}}>Submitted</Button>
           </DropdownMenuContent>
         </DropdownMenu>
     )

@@ -58,10 +58,10 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         )
       },
       {
-        accessorKey: "submission_time",
-        header: "Submission Time",
+        accessorKey: "submition_time",
+        header: "Submition Time",
         cell: ({ row }) => (
-          <div>{row.getValue("submission_time")}</div>
+          <div>{row.getValue("submition_time")}</div>
         )
       },
       {
@@ -134,10 +134,10 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         )
       },
       {
-        accessorKey: "submission_time",
-        header: "Submission Time",
+        accessorKey: "submition_time",
+        header: "Submition Time",
         cell: ({ row }) => (
-          <div>{row.getValue("submission_time")}</div>
+          <div>{row.getValue("submition_time")}</div>
         )
       },
       {

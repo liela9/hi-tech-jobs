@@ -45,7 +45,7 @@ interface JobsTableProps {
 }
 
 const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
-  const [sorting, setSorting] = useState<SortingState>([{ id: "submission_time", desc: true }])
+  const [sorting, setSorting] = useState<SortingState>([{ id: "submition_time", desc: true }])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>({})
@@ -96,7 +96,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
             : <CardTitle>Deleted Jobs</CardTitle> 
             }
             <CardDescription>
-              View jobs and manage your submissions.
+              View jobs and manage your submitions.
             </CardDescription>
           </CardHeader>
           <CardContent className="overflow-y-auto">
