@@ -12,15 +12,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronDown, ExternalLink, ChevronLeft, ChevronRight, FolderOutput } from "lucide-react"
+import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+
 import {
   Card,
   CardContent,
@@ -43,6 +37,7 @@ import { Tooltip,
   TooltipProvider, 
 } from '@/components/ui/tooltip'
 
+import TableTopbar from "./TableTopbar"
 import { getColumns } from './jobsTableColumns'
 import { ROOT_PATH } from "@/lib/utils" 
 
@@ -115,52 +110,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   
   return (
     <div className="w-full">
-      <div className="flex py-4">
-        <Input
-          placeholder="Filter..."
-          value={(table.getState().globalFilter as string) ?? ""}
-          onChange={(event) =>
-            table.setGlobalFilter(event.target.value)
-          }
-          className="max-w-sm"
-        />
-          {Object.keys(rowSelection).length > 0 && (
-            <Button
-              variant="outline"
-              className="ml-4"
-              onClick={handleRestoreRows}
-            >
-            <FolderOutput className="mr-2 h-4 w-4"/>
-              Restore
-            </Button>
-          )}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <TableTopbar table={table} rowSelection={rowSelection} data={data}/>
       <div className="flex flex-col ">
         <Card className="flex flex-col flex-1">
           <CardHeader>
