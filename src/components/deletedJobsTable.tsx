@@ -41,7 +41,7 @@ import TableTopbar from "./TableTopbar"
 import { getColumns } from './jobsTableColumns'
 import { ROOT_PATH } from "@/lib/utils" 
 
-interface JobsTableProps {
+interface DeletedJobsTableProps {
   jobs: Job[];
   currentPath: string;
 }
@@ -60,7 +60,7 @@ export async function setAsNotDeleted(jobs: Job[]) {
   }
 }
 
-const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
+const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "submition_time", desc: true }])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -114,10 +114,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: JobsTableProps) => {
       <div className="flex flex-col ">
         <Card className="flex flex-col flex-1">
           <CardHeader>
-            {currentPath === '/jobs' ? <CardTitle>Jobs</CardTitle> 
-            : currentPath === '/jobs/submitted' ? <CardTitle>Submitted Jobs</CardTitle> 
-            : <CardTitle>Deleted Jobs</CardTitle> 
-            }
+            <CardTitle>Deleted Jobs</CardTitle> 
             <CardDescription>
               View jobs and manage your submitions.
             </CardDescription>

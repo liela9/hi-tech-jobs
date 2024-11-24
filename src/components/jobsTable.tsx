@@ -92,8 +92,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
         <Card className="flex flex-col flex-1">
           <CardHeader>
             {currentPath === '/jobs' ? <CardTitle>Jobs</CardTitle> 
-            : currentPath === '/jobs/submitted' ? <CardTitle>Submitted Jobs</CardTitle> 
-            : <CardTitle>Deleted Jobs</CardTitle> 
+            : <CardTitle>Submitted Jobs</CardTitle>
             }
             <CardDescription>
               View jobs and manage your submitions.

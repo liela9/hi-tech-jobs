@@ -57,7 +57,7 @@ export default function JobsList({ url }: JobsListProps) {
     }});
     
     socket.on('force-refresh', () => {
-      // window.location.reload();
+      window.location.reload();
     });    
     
     socket.on('disconnect', () => {
@@ -77,6 +77,6 @@ export default function JobsList({ url }: JobsListProps) {
   }
 
   return (
-    <JobsTable jobs={jobs} currentPath={url.slice(4)} ></JobsTable>
+    <JobsTable jobs={jobs} currentPath={url.slice(4)}/>
   )
 }
