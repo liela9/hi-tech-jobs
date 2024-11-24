@@ -87,7 +87,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   
   return (
     <div className="w-full">
-      <TableTopbar table={table} rowSelection={rowSelection} data={data}/>
+      <TableTopbar table={table} rowSelection={rowSelection} data={data} currentPath={currentPath}/>
       <div className="flex flex-col ">
         <Card className="flex flex-col flex-1">
           <CardHeader>

@@ -17,32 +17,14 @@ export async function GET() {
     }
 }
 
-// Set job as deleted
-export async function DELETE(request: Request) {
-    const data: Job = await request.json()
-    const { id } = data
-
-    try {
-        const query = `UPDATE jobs
-                       SET isDeleted = true
-                       WHERE id = ($1)`;
-    
-        await pool.query(query, [id]);
-        return NextResponse.json({ message: 'Updated successfully' }, { status: 200 })
-    } catch (error) {
-        console.error('Database error:', error);
-        return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });
-    }
-}
-
-// Set job as NOT deleted
+// Turn isDeleted value
 export async function PATCH(request: Request) {
     const data: Job = await request.json()
     const { id } = data
 
     try {
         const query = `UPDATE jobs
-                       SET isDeleted = false
+                       SET isDeleted = NOT isDeleted
                        WHERE id = ($1)`;
     
         await pool.query(query, [id]);

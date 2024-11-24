@@ -46,19 +46,6 @@ interface DeletedJobsTableProps {
   currentPath: string;
 }
 
-// Set given jobs as NOT deleted
-export async function setAsNotDeleted(jobs: Job[]) {
-  for (const element of jobs) {
-    try {
-      await fetch(`${ROOT_PATH}/api/jobs/deleted`, {
-          method: 'PATCH',
-          body: JSON.stringify({ id: element.id })
-      })
-    } catch (error) {
-      console.log(`Error message: `, error);
-    }
-  }
-}
 
 const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "submition_time", desc: true }])
@@ -68,13 +55,6 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
 
   const data = useMemo(() => Object.values(jobs), [jobs])
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
-  
-  const handleRestoreRows = () => {
-    const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
-    const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
-    
-    setAsNotDeleted(selectedRowsData)
-  }
   
   const PAGE_SIZE = 8
   const table = useReactTable({
@@ -110,7 +90,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
   
   return (
     <div className="w-full">
-      <TableTopbar table={table} rowSelection={rowSelection} data={data}/>
+      <TableTopbar table={table} rowSelection={rowSelection} data={data} currentPath={currentPath}/>
       <div className="flex flex-col ">
         <Card className="flex flex-col flex-1">
           <CardHeader>

@@ -11,7 +11,7 @@ import { Tooltip,
 } from '@/components/ui/tooltip'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ChevronDown, Trash2 } from "lucide-react"
+import { ChevronDown, Trash2, FolderOutput } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 
 import { ROOT_PATH } from "@/lib/utils"
@@ -20,14 +20,15 @@ interface TableTopbarProps {
     table: Table<Job>;
     rowSelection: {[key: string]: boolean};
     data: Job[];
+    currentPath: string;
 }
 
-// Set given jobs as deleted
-export async function setAsDeleted(jobs: Job[]) {
+
+export async function turnIsDeleted(jobs: Job[]) {
     for (const element of jobs) {
       try {
         await fetch(`${ROOT_PATH}/api/jobs/deleted`, {
-            method: 'DELETE',
+            method: 'PATCH',
             body: JSON.stringify({ id: element.id })
         })
       } catch (error) {
@@ -36,11 +37,11 @@ export async function setAsDeleted(jobs: Job[]) {
     }
 }
 
-const handleDeleteRows = (rowSelection: {[key: string]: boolean}, data: Job[]) => {
+const changeIsDeleted = (rowSelection: {[key: string]: boolean}, data: Job[]) => {
     const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
     const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
     
-    setAsDeleted(selectedRowsData)
+    turnIsDeleted(selectedRowsData)
 }
 
 async function handleRefreshData() {
@@ -53,7 +54,7 @@ async function handleRefreshData() {
     }
 }
 
-function TableTopbar({table, rowSelection, data}: TableTopbarProps) {
+function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps) {
     return (
         <div className="flex py-4 justify-between">
             <div className="flex space-x-4 flex-initial w-full">
@@ -80,11 +81,20 @@ function TableTopbar({table, rowSelection, data}: TableTopbarProps) {
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
-                {Object.keys(rowSelection).length > 0 && (
+                {Object.keys(rowSelection).length > 0 && currentPath === "/jobs/deleted" ? (
+                    <Button
+                    variant="outline"
+                    className="ml-4"
+                    onClick={() => changeIsDeleted(rowSelection, data)}
+                  >
+                  <FolderOutput className="mr-2 h-4 w-4"/>
+                    Restore
+                  </Button>
+                ) : Object.keys(rowSelection).length > 0 && (
                     <Button
                     variant="destructive"
                     className="ml-4"
-                    onClick={() => handleDeleteRows(rowSelection, data)}
+                    onClick={() => changeIsDeleted(rowSelection, data)}
                     >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
