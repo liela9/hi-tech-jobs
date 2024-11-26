@@ -169,8 +169,8 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
           <CardFooter>
           <form className="flex items-center w-full justify-between">
             <div className="flex-1 text-xs text-muted-foreground">
-              {table.getState().pagination.pageIndex + 1} of{" "}
-              {Math.ceil(data.length / PAGE_SIZE)} page(s)
+              {table.getPageCount() === 0 ? 0 : table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount().toLocaleString()} page(s)
             </div>
             <div className="flex text-xs text-muted-foreground items-center gap-1">
             Go to page:
@@ -186,26 +186,6 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
                 className="border p-1 rounded w-16"
               />
             </div>
-            {/* <div className="flex">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <ChevronLeft className="mr-2 h-4 w-4" />
-                Previous
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div> */}
         </form>
           </CardFooter>
         </Card>

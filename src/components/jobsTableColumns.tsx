@@ -6,10 +6,40 @@ import { Tooltip,
   TooltipTrigger, 
   TooltipProvider, 
 } from '@/components/ui/tooltip'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import ActionsMenu from "./ActionsMenu"
 import EditDialog from "./EditDialog"
+import { ROOT_PATH } from "@/lib/utils"
 
+const DEPARTMENTS = [
+  'All departments',
+  'data-science',
+  'frontend',
+  'hardware',
+  'qa',
+  'security',
+  'software',
+  'support',
+]
+
+// async function handleDepartmentChange(column: Column<any, any>, value: string) {
+//   // try {
+//   //   await fetch(`${ROOT_PATH}/api/jobs/departments`, {
+//   //     method: 'GET',
+//   //     body: JSON.stringify({ department: value })
+//   //   })
+//   // } catch (error) {
+//   //   console.log(`Error message: `, error);
+//   // }
+//   column.setFilterValue()
+// }
 
 export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
     if ( currentPath === '/jobs/submitted' ) {
@@ -45,7 +75,24 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
       },
       {
         accessorKey: "department",
-        header: "Department",
+        header: ({ column }) => (
+          <Select onValueChange={value => column.setFilterValue(value)}>
+            <SelectTrigger>
+                <SelectValue placeholder="All departments" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+                {DEPARTMENTS.map((department) => (
+                    <SelectItem
+                        key={department}
+                        value={department.toString()}
+                    >
+                        {department}
+                    </SelectItem>
+                  ))
+                }
+            </SelectContent>
+          </Select>
+        ),
         cell: ({ row }) => (
           <div className="capitalize">{row.getValue("department")}</div>
         ),
@@ -197,7 +244,24 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
     },
     {
       accessorKey: "department",
-      header: "Department",
+      header: ({ column }) => (
+        <Select onValueChange={value => column.setFilterValue(value)}>
+          <SelectTrigger>
+              <SelectValue placeholder="All departments" />
+          </SelectTrigger>
+          <SelectContent position="popper">
+              {DEPARTMENTS.map((department) => (
+                  <SelectItem
+                      key={department}
+                      value={department.toString()}
+                  >
+                      {department}
+                  </SelectItem>
+                ))
+              }
+          </SelectContent>
+        </Select>
+      ),
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("department")}</div>
       ),

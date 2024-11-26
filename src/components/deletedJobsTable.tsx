@@ -169,8 +169,8 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
           <CardFooter>
           <form className="flex items-center w-full justify-between">
             <div className="flex-1 text-xs text-muted-foreground">
-              {table.getState().pagination.pageIndex + 1} of{" "}
-              {Math.ceil(data.length / PAGE_SIZE)} page(s)
+              {table.getPageCount() === 0 ? 0 : table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount().toLocaleString()} page(s)
             </div>
             <div className="flex text-xs text-muted-foreground items-center gap-1">
             Go to page:
