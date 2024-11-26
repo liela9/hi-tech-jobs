@@ -8,11 +8,11 @@ const initializeContent = async () => {
     try {
         for (const job of jobs) {
             const query = `
-            INSERT INTO jobs (title, company, category, city, level, url)
+            INSERT INTO jobs (title, company, department, city, level, url)
             VALUES ($1, $2, $3, $4, $5, $6)
             ON CONFLICT (id) DO NOTHING;  -- To avoid duplicate ID insertion
             `;
-            const values = [job.title, job.company, job.category, job.city, job.level, job.url];
+            const values = [job.title, job.company, job.department, job.city, job.level, job.url];
 
             await pool.query(query, values); 
         }

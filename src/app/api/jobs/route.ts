@@ -75,10 +75,10 @@ export async function POST(request: Request) {
             if ( result.rows.length === 0 ) { // if this job is not in the DB
                 // insert job
                 const query = `
-                    INSERT INTO jobs (title, company, category, city, level, url)
+                    INSERT INTO jobs (title, company, department, city, level, url)
                     VALUES ($1, $2, $3, $4, $5, $6)`;
         
-                const values = [job.title, job.company, job.category, job.city, job.level, job.url];
+                const values = [job.title, job.company, job.department, job.city, job.level, job.url];
                 await pool.query(query, values);  
             }
         }

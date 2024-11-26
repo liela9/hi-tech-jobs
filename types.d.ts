@@ -2,7 +2,7 @@ type Job = {
     id: string;
     title: string;
     company: string;
-    category: string;
+    department: string;
     city: string;
     level: string,
     url: string;

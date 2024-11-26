@@ -6,13 +6,13 @@ import Papa from 'papaparse'
 
 const OUTPUT_PATH = 'data/'
 const CATEGORIES = [
-  // 'data-science',
-  // 'frontend',
-  // 'hardware',
+  'data-science',
+  'frontend',
+  'hardware',
   'qa',
-  // 'security',
-  // 'software',
-  // 'support',
+  'security',
+  'software',
+  'support',
 ];
 
 const PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
@@ -35,7 +35,16 @@ function loadData() {
   return CATEGORIES.map(category => {
     const csvPath = path.join(OUTPUT_PATH, `${category}.csv`);
     const csvFile = fs.readFileSync(csvPath, 'utf-8');
-    return Papa.parse(csvFile, { header: true }).data;
+    const parsedData: any[] = Papa.parse(csvFile, { header: true }).data;
+    return parsedData.map(item => ({
+      ...item,
+      department: category,
+      title: item.title?.toLowerCase(),
+      company: item.company?.toLowerCase(),
+      city: item.city?.toLowerCase(),
+      level: item.level?.toLowerCase(),
+      url: canonicalizeUrl(item.url),
+    }));
   });
 }
 
@@ -54,18 +63,6 @@ function canonicalizeUrl(url: string) {
   return parsedUrl.toString();
 }
 
-function transformData(data: any[]): Job[] {
-  return data.map(item => ({
-    ...item,
-    title: item.title?.toLowerCase(),
-    company: item.company?.toLowerCase(),
-    category: item.category?.toLowerCase(),
-    city: item.city?.toLowerCase(),
-    level: item.level?.toLowerCase(),
-    url: canonicalizeUrl(item.url),
-  }));
-}
-
 function levelFilter(data: Job[]): Job[] {
   return data.filter(item =>
     /engineer|representative|student/.test(item.level)
@@ -73,7 +70,7 @@ function levelFilter(data: Job[]): Job[] {
 }
 
 function wordFilter(data: Job[]): Job[] {
-  const blacklist = ['senior', 'manager', 'leader', "architect", "relocation", "principal"];
+  const blacklist = ['senior', 'manager', 'leader', "architect", "principal"];
   return data.filter(item =>
     !blacklist.some(word => new RegExp(word, 'i').test(item.title))
   );
@@ -82,10 +79,8 @@ function wordFilter(data: Job[]): Job[] {
 export default async function fetchAllJobs(): Promise<Job[]> {
   await fetchAllFiles();
   const data = loadData().flat();
-  const transformedData = transformData(data);
-  let filteredData = levelFilter(transformedData);
+  let filteredData = levelFilter(data);
   filteredData = wordFilter(filteredData);
 
-  // TODO: return ALL the data
-  return filteredData.slice(0, 20)
+  return filteredData
 }

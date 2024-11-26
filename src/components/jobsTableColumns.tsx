@@ -44,6 +44,13 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
         ),
       },
       {
+        accessorKey: "department",
+        header: "Department",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("department")}</div>
+        ),
+      },
+      {
         accessorKey: "company",
         header: "Company",
         cell: ({ row }) => (
@@ -147,6 +154,13 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
           <div className="capitalize">{row.getValue("application_status")}</div>
         ),
       },
+      {
+        id: "editing",
+        enableHiding: false,
+        cell: ({ row }) => (
+          <EditDialog job={row.original}/>
+        )
+      }
     ]
   }
 
@@ -179,6 +193,13 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
       header: "Title",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("title")}</div>
+      ),
+    },
+    {
+      accessorKey: "department",
+      header: "Department",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("department")}</div>
       ),
     },
     {

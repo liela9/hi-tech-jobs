@@ -5,6 +5,7 @@ import {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+  PaginationState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -53,19 +54,20 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const data = useMemo(() => Object.values(jobs), [jobs])
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
-  const PAGE_SIZE = 8
+  const PAGE_SIZE = 6
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: PAGE_SIZE,
+  })
+
   const table = useReactTable({
     data,
     columns,
-    initialState: {
-      pagination: {
-        pageSize: PAGE_SIZE,
-      },
-    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -75,12 +77,10 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     }
   })  
-  
-  const handleNextPage = useCallback(() => table.nextPage(), [table])
-  const handlePreviousPage = useCallback(() => table.previousPage(), [table])
-  
+    
   if (!data || !table) {
     return <div>Loading...</div>;
   }
@@ -169,14 +169,28 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
           <CardFooter>
           <form className="flex items-center w-full justify-between">
             <div className="flex-1 text-xs text-muted-foreground">
-              {table.getState().pagination.pageIndex} of{" "}
+              {table.getState().pagination.pageIndex + 1} of{" "}
               {Math.ceil(data.length / PAGE_SIZE)} page(s)
             </div>
-            <div className="flex">
+            <div className="flex text-xs text-muted-foreground items-center gap-1">
+            Go to page:
+              <input
+                type="number"
+                min="1"
+                max={table.getPageCount()}
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={e => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0
+                  table.setPageIndex(page)
+                }}
+                className="border p-1 rounded w-16"
+              />
+            </div>
+            {/* <div className="flex">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={handlePreviousPage}
+                onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
                 <ChevronLeft className="mr-2 h-4 w-4" />
@@ -185,13 +199,13 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={handleNextPage}
+                onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
                 Next
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
-            </div>
+            </div> */}
         </form>
           </CardFooter>
         </Card>
