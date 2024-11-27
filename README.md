@@ -1,7 +1,10 @@
-This is a website for juniors to search development jobs and manage personal recruitment processes.
+This is a website for juniors to search development entry-level jobs and manage personal recruitment processes.
+
+![image](https://github.com/user-attachments/assets/ea48b3c2-8958-47ad-9524-554fdfff4379)
+
 
 ## Getting Started
-First, build the server (afetr every change at initDB.sql):
+Build the server (afetr every change at initDB.sql):
 
 ```bash
 npm run build
@@ -30,3 +33,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 * Backend -> [nodejs](https://nodejs.org/en)
 
 * Database -> [postgresql](https://www.postgresql.org/)
+
