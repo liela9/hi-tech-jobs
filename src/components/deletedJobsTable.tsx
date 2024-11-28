@@ -186,6 +186,26 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
                 className="border p-1 rounded w-16"
               />
             </div>
+            <div className="flex">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronLeft className="mr-2 h-4 w-4" />
+                Previous
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
         </form>
           </CardFooter>
         </Card>

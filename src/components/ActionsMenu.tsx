@@ -1,15 +1,17 @@
 import React from "react"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
 import { ROOT_PATH } from "@/lib/utils"
+import DeleteButton from "./DeleteButton"
 
 
 function getTime() {
@@ -51,7 +53,12 @@ function ActionsMenu(row: Job) {
           <DropdownMenuContent >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Button variant='ghost' onClick={() => {updateSubmitionTime(row)}}>Submitted</Button>
+            <DropdownMenuItem>
+              <Button variant='ghost' onClick={() => {updateSubmitionTime(row)}}>Submitted</Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <DeleteButton/>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
     )

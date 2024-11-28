@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import Link from "next/link"
 
 import "./globals.css"
 import Topbar from "./Topbar"
@@ -17,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Junior Roles",
+  title: "Junior Search",
 };
 
 export default function RootLayout({
