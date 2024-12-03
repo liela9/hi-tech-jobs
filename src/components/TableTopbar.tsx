@@ -57,7 +57,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                     Restore
                   </Button>
                 ) : Object.keys(rowSelection).length > 0 && (
-                    <DeleteButton/>)
+                    <DeleteButton rowSelection={rowSelection} data={data}/>)
                 }
             </div>
             <div className="flex gap-4">

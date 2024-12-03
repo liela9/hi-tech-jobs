@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState, useMemo } from "react"
+import React, { useState, useMemo } from "react"
 import {
   ColumnFiltersState,
   SortingState,
@@ -58,7 +58,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
   const PAGE_SIZE = 6
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   })
@@ -70,6 +70,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -188,6 +189,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
             </div>
             <div className="flex">
               <Button
+                type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => table.previousPage()}
@@ -197,6 +199,7 @@ const DeletedJobsTable = ({ jobs, currentPath }: DeletedJobsTableProps) => {
                 Previous
               </Button>
               <Button
+                type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => table.nextPage()}

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState, useMemo } from "react"
+import React, { useState, useMemo } from "react"
 import {
   ColumnFiltersState,
   SortingState,
@@ -55,12 +55,13 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
   const columns = useMemo(() => getColumns(currentPath), [currentPath])
   
   const PAGE_SIZE = 6
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   })
 
   const table = useReactTable({
+    // debugTable: true, 
     data,
     columns,
     onSortingChange: setSorting,
@@ -78,7 +79,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
       columnVisibility,
       rowSelection,
       pagination,
-    }
+    },
   })  
     
   if (!data || !table) {
@@ -188,6 +189,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
             </div>
             <div className="flex">
               <Button
+                type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => table.previousPage()}
@@ -197,6 +199,7 @@ const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
                 Previous
               </Button>
               <Button
+                type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => table.nextPage()}

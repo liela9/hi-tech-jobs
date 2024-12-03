@@ -14,4 +14,4 @@ CREATE table IF NOT EXISTS jobs (
     isDeleted BOOLEAN default false
 );        
 
--- DELETE FROM jobs;
+DELETE FROM jobs;

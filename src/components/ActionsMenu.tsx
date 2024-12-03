@@ -57,7 +57,7 @@ function ActionsMenu(row: Job) {
               <Button variant='ghost' onClick={() => {updateSubmitionTime(row)}}>Submitted</Button>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <DeleteButton/>
+              <DeleteButton data={[row]}/>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

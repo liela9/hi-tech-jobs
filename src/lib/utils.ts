@@ -20,9 +20,13 @@ export async function turnIsDeleted(jobs: Job[]) {
   }
 }
 
-export const changeIsDeleted = (rowSelection: {[key: string]: boolean}, data: Job[]) => {
-  const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
-  const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
+export const changeIsDeleted = (rowSelection: {[key: string]: boolean} | undefined, data: Job[]) => {
+  if (rowSelection) {
+    const selectedRowIds = Object.keys(rowSelection).filter((key) => rowSelection[key]);
+    const selectedRowsData = selectedRowIds.map((id) => data[parseInt(id)]);
   
-  turnIsDeleted(selectedRowsData)
+    turnIsDeleted(selectedRowsData)
+  } else {
+    turnIsDeleted(data)
+  }
 }

@@ -3,8 +3,12 @@ import { Button } from "@/components/ui/button"
 
 import { changeIsDeleted } from "@/lib/utils"
 
+interface DeleteButtonProps {
+    rowSelection?: {[key: string]: boolean};
+    data: Job[];
+}
 
-function DeleteButton(rowSelection:{[key: string]: boolean}, data: Job[]) {
+function DeleteButton({rowSelection, data}: DeleteButtonProps) {
     return (
         <Button
             variant="destructive"
