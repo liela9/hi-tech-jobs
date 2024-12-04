@@ -12,7 +12,7 @@ function DeleteButton({rowSelection, data}: DeleteButtonProps) {
     return (
         <Button
             variant="destructive"
-            className=""
+            className="ml-4"
             onClick={() => changeIsDeleted(rowSelection, data)}
             >
             <Trash2 className="mr-2 h-4 w-4" />

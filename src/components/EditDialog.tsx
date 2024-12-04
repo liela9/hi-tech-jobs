@@ -106,7 +106,7 @@ function EditDialog({ job }: EditDialogProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleSaveChanges}>Save changes</Button>
+          <Button onClick={handleSaveChanges}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

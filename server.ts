@@ -48,7 +48,6 @@ app.prepare().then(() => {
       dbEmitter.on("change", (change) => {
         // console.log("Broadcasting change: ", change)
         io.emit("job-update", change); // Emit the change event to all clients
-        io.emit("force-refresh")
       });
 
       // Handle database watcher errors

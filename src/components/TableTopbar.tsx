@@ -38,7 +38,7 @@ async function handleRefreshData() {
 function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps) {
     return (
         <div className="flex py-4 justify-between">
-            <div className="flex space-x-4 flex-initial w-full">
+            <div className="flex flex-initial w-full">
                 <Input
                 placeholder="Filter..."
                 value={(table.getState().globalFilter as string) ?? ""}
@@ -47,18 +47,20 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                 }
                 className="max-w-sm"
                 />
-                {Object.keys(rowSelection).length > 0 && currentPath === "/jobs/deleted" ? (
-                    <Button
-                    variant="outline"
-                    className="ml-4"
-                    onClick={() => changeIsDeleted(rowSelection, data)}
-                  >
-                  <FolderOutput className="mr-2 h-4 w-4"/>
-                    Restore
-                  </Button>
-                ) : Object.keys(rowSelection).length > 0 && (
-                    <DeleteButton rowSelection={rowSelection} data={data}/>)
-                }
+                <form>
+                    {Object.keys(rowSelection).length > 0 && currentPath === "/jobs/deleted" ? (
+                        <Button
+                        variant="outline"
+                        className="ml-4"
+                        onClick={() => changeIsDeleted(rowSelection, data)}
+                    >
+                    <FolderOutput className="mr-2 h-4 w-4"/>
+                        Restore
+                    </Button>
+                    ) : Object.keys(rowSelection).length > 0 && (
+                        <DeleteButton rowSelection={rowSelection} data={data}/>)
+                    }
+                </form>
             </div>
             <div className="flex gap-4">
                 <TooltipProvider>

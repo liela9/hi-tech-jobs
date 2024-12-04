@@ -54,11 +54,7 @@ export default function JobsList({ url }: JobsListProps) {
         setJobs((prevJobs) =>
           prevJobs.filter((job) => job.id !== update.data.id)
       );
-    }});
-    
-    socket.on('force-refresh', () => {
-      window.location.reload();
-    });    
+    }});   
     
     socket.on('disconnect', () => {
       console.log('WebSocket disconnected');
