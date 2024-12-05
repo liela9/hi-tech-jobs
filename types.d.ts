@@ -10,3 +10,9 @@ type Job = {
     referrer: string;
     status: string;
 }
+
+type Card = {
+    id: string;
+    title: string;
+    choices: string[];
+}

@@ -3,17 +3,8 @@ import path from 'path'
 import fs from 'fs'
 import Papa from 'papaparse'
 
-
+import { CATEGORIES } from './utils'
 const OUTPUT_PATH = 'data/'
-const CATEGORIES = [
-  'data-science',
-  'frontend',
-  'hardware',
-  'qa',
-  'security',
-  'software',
-  'support',
-];
 
 const PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
 

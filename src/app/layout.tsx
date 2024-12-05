@@ -4,7 +4,7 @@ import "./globals.css"
 import Topbar from "./Topbar"
 
 export const metadata: Metadata = {
-  title: "Junior Search",
+  title: "Job Search",
 };
 
 export default function RootLayout({
