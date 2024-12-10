@@ -18,6 +18,7 @@ import DeleteButton from "./DeleteButton"
 import { changeIsDeleted } from "@/lib/utils"
 import { ROOT_PATH } from "@/lib/utils"
 
+
 interface TableTopbarProps {
     table: Table<Job>;
     rowSelection: {[key: string]: boolean};
@@ -25,14 +26,32 @@ interface TableTopbarProps {
     currentPath: string;
 }
 
-async function handleRefreshData() {
+async function getUserPreferences() {
     try {
-        await fetch(`${ROOT_PATH}/api/jobs`, {
-            method: 'POST',
+        return await fetch(`${ROOT_PATH}/api/user`, {
+            method: 'GET',
         })
     } catch (error) {
         console.log(`Error message: `, error);
     }
+}
+
+async function handleRefreshData() {
+    const preferences = await getUserPreferences()
+    console.log('preferences: ', preferences)
+
+    // if (preferences) {
+    //     const jobs = await fetchAllJobs(preferences[0], preferences[1])
+    
+    //     try {
+    //         await fetch(`${ROOT_PATH}/api/jobs`, {
+    //             method: 'POST',
+    //             body: JSON.stringify({ jobs: jobs }),
+    //         })
+    //     } catch (error) {
+    //         console.log(`Error message: `, error);
+    //     }
+    // }
 }
 
 function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps) {

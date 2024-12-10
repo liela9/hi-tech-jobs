@@ -1,4 +1,7 @@
--- DROP TABLE jobs;
+-- For every change in EXISTING table run (uncomment):
+--DROP TABLE jobs;
+--DROP TABLE includes;
+--DROP TABLE excludes;
 
 CREATE table IF NOT EXISTS jobs (
     id SERIAL PRIMARY KEY,
@@ -12,6 +15,16 @@ CREATE table IF NOT EXISTS jobs (
     referrer VARCHAR(255) default 'None',
     application_status VARCHAR(255) default 'new',
     isDeleted BOOLEAN default false
-);        
+);   
 
-DELETE FROM jobs;
+CREATE table IF NOT EXISTS includes (
+    id SERIAL PRIMARY KEY,
+    word VARCHAR(255) NOT NULL
+);  
+
+CREATE table IF NOT EXISTS excludes (
+    id SERIAL PRIMARY KEY,
+    word VARCHAR(255) NOT NULL
+);  
+
+-- DELETE FROM jobs;

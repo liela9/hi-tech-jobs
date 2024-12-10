@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
+import { io } from 'socket.io-client'
 import { ChevronLeft, ChevronRight, MoveRight } from "lucide-react"
 import {
   ToggleGroup,
@@ -31,17 +32,17 @@ const cards: Card[] = [
   },
 ]
 
-let mannagerInclude = ['mannager', 'leader', 'lead']
-let mannagerExclude = ['student', 'junior', 'senior', 'developer', 'principal', 'architect']
-let experiencedInclude = ['senior', 'developer', 'principal', 'architect']
-let experiencedExclude = ['student', 'junior', 'mannager', 'leader', 'lead']
-let juniorInclude = ['engineer', 'representative', 'developer']
-let juniorExclude = ['mannager', 'leader', 'lead', 'senior', 'principal', 'architect']
-let studentInclude = ['student']
+const mannagerInclude = ['mannager', 'leader', 'lead']
+const mannagerExclude = ['student', 'junior', 'senior', 'developer', 'principal', 'architect']
+const experiencedInclude = ['senior', 'developer', 'principal', 'architect']
+const experiencedExclude = ['student', 'junior', 'mannager', 'leader', 'lead']
+const juniorInclude = ['engineer', 'representative', 'developer']
+const juniorExclude = ['mannager', 'leader', 'lead', 'senior', 'principal', 'architect']
+const studentInclude = ['student']
 
 export default function CustomizeLayout() {
-  let includesKeywords = new Set<string>()
-  let excludesKeywords = new Set<string>()
+  const includesKeywords = new Set<string>()
+  const excludesKeywords = new Set<string>()
 
   const [includes, setIncludes] = useState<string[]>([]);
   const [excludes, setExcludes] = useState<string[]>([]);
@@ -92,8 +93,6 @@ export default function CustomizeLayout() {
       studentInclude.forEach(element => includesKeywords.add(element))
     }
 
-    console.log('includes:', Array.from(includesKeywords))
-    console.log('excludes:', Array.from(excludesKeywords))
     setIncludes(Array.from(includesKeywords))
     setExcludes(Array.from(excludesKeywords))  
     setProfileReady(true)

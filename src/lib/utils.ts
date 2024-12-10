@@ -7,13 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 
 export const ROOT_PATH = 'http://localhost:3000'
 export const CATEGORIES = [
-  'Data-science',
-  'Frontend',
-  'Hardware',
-  'QA',
-  'Security',
-  'Software',
-  'Support',
+  'data-science',
+  'frontend',
+  'hardware',
+  'qa',
+  'security',
+  'software',
+  'support',
 ]
 
 export async function turnIsDeleted(jobs: Job[]) {

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 import pool from '../../../lib/db';
-import fetchAllJobs from "@/lib/getAllJobs";
 
 
 // Get all new jobs
@@ -59,7 +58,8 @@ export async function PATCH(request: Request) {
 
 // Insert new jobs
 export async function POST(request: Request) {
-    const jobs = await fetchAllJobs()
+    const data = await request.json()
+    const { jobs } = data
 
     try {
         for (const job of jobs) {
