@@ -8,23 +8,17 @@ export async function GET(request: NextRequest) {
 
     if (encodedData) {
         try {
-          const decodedData = JSON.parse(decodeURIComponent(encodedData))
-          console.log('decodedData', decodedData)
-          return NextResponse.json(decodedData)
+            const decodedData = JSON.parse(decodeURIComponent(encodedData))
+
+            await fetchAllFiles()
+            const data = loadData().flat()
+            const keywordFiltered = filterByKeywords(data, decodedData.keywords)
+            const result = filterOutBlacklist(keywordFiltered, decodedData.blacklist)
+        
+            return NextResponse.json(result, { status: 200 });
         } catch (error) {
-          return NextResponse.json({ error: 'Invalid data format' }, { status: 400 })
+            console.error('Error loading data:', error)
+            return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 })
         }
     }
-
-    // try {
-    //   await fetchAllFiles()
-    //   const data = loadData().flat()
-    //   const keywordFiltered = filterByKeywords(data, keywords)
-    //   const result = filterOutBlacklist(keywordFiltered, blacklist)
-
-    //   return NextResponse.json(result, { status: 200 });
-    // } catch (error) {
-    //   console.error('Error loading data:', error)
-    //   return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 })
-    // }
 }

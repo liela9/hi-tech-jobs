@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { io } from 'socket.io-client'
 import { ChevronLeft, ChevronRight, MoveRight } from "lucide-react"
 import {
   ToggleGroup,
@@ -108,7 +107,7 @@ export default function CustomizeLayout() {
           <br />
           <CardContent>
             <ToggleGroup 
-              size={"lg"} 
+              size="lg"
               type="multiple"
               value={selectedItems[cards[currentSlide].id]}
               onValueChange={handleSelectionChange}
@@ -169,8 +168,7 @@ export default function CustomizeLayout() {
             className="p-6 font-bold text-lg my-24"
             size="sm"
             >
-            Start explore jobs
-            <MoveRight className="ml-2 h-4 w-4"/>
+            Custom filtering
           </Button>
         </Link>
       )}

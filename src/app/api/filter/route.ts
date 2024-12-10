@@ -30,7 +30,6 @@ export async function POST(request: Request) {
 
     const data = await request.json()
     const { includes, excludes } = data
-    console.log('in post pref. ', includes, excludes)
 
     try {
         for (const keyword of includes) {         
