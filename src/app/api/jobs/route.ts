@@ -85,6 +85,18 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: 'New jobs loaded successfully' }, { status: 200 })
     } catch (error) {
         console.error('Error inserting content:', error);
+        return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 })
+    }
+}
+
+// Clear jobs table
+export async function DELETE(request: Request) {
+    try {    
+        await pool.query(`DELETE FROM jobs`)
+
+        return NextResponse.json({ message: 'Deleted successfully' }, { status: 200 })
+    } catch (error) {
+        console.error('Database error: ', error);
         return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });
     }
 }

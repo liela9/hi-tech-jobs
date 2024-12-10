@@ -24,7 +24,7 @@ export async function turnIsDeleted(jobs: Job[]) {
           body: JSON.stringify({ id: element.id })
       })
     } catch (error) {
-      console.log(`Error message: `, error);
+      console.error(`Error message: `, error);
     }
   }
 }

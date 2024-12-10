@@ -9,67 +9,67 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 import { ROOT_PATH } from "@/lib/utils";
 import { MoveRight } from 'lucide-react'
-import Link from 'next/link'
 
 interface FilterLayoutProps {
     includes: string[];
     excludes: string[];
+    categories: string[];
 }
 
-async function postUserPreferences(includes: string[], excludes: string[]) {
+async function postUserPreferences(includes: string[], excludes: string[], categories: string[]) {
     try {
       await fetch(`${ROOT_PATH}/api/filter`, {
         method: 'POST',
-        body: JSON.stringify({ includes: includes, excludes: excludes}),
+        body: JSON.stringify({ includes: includes, excludes: excludes, categories: categories}),
       })
     } catch (error) {
-      console.log(`Error message: `, error);
+      console.error(`Error message: `, error);
     }
   }
   
-  async function loadJobs(includes: string[], excludes: string[]) {
+  async function loadJobs(includes: string[], excludes: string[], categories: string[]) {
     try {
-      // read data from source
-      const encodedData = JSON.stringify({ keywords: includes, blacklist: excludes })
+        // clear jobs table from previous data
+        await fetch(`${ROOT_PATH}/api/jobs`, {
+            method: 'DELETE',
+        })
+        
+        const encodedData = JSON.stringify({ keywords: includes, blacklist: excludes, categories: categories })
+        
+        // read data from source
+        const res = await fetch(`${ROOT_PATH}/api/initialization?data=${encodedData}`, {
+            method: 'GET',
+        })
+        const jobs = await res.json()
+        console.log('jobs:',jobs)
 
-      const res = await fetch(`${ROOT_PATH}/api/initialization?data=${encodedData}`, {
-        method: 'GET',
-      })
-
-      const jobs = await res.json()
-  
-      // insert data to DB
-      await fetch(`${ROOT_PATH}/api/jobs`, {
-        method: 'POST',
-        body: JSON.stringify({ jobs: jobs }),
-      })
+        // insert data to DB
+        await fetch(`${ROOT_PATH}/api/jobs`, {
+            method: 'POST',
+            body: JSON.stringify({ jobs: jobs }),
+        })
     } catch (error) {
-      console.log(`Error message: `, error);
+        console.error(`Error message: `, error);
     }
 }
 
-export default function FilterLayout({includes, excludes}: FilterLayoutProps) {
+export default function FilterLayout({includes, excludes, categories}: FilterLayoutProps) {
     const [keywords, setKeywords] = useState<string[]>(includes)
     const [inputValue, setInputValue] = useState<string>('')
 
     const handleAddItem = () => {
         if (inputValue.trim() && !keywords.includes(inputValue.trim())) {
-        setKeywords([...keywords, inputValue.trim()])
-        setInputValue('')
+            setKeywords([...keywords, inputValue.trim()])
+            setInputValue('')
         }
   }
 
   const handleSubmit = () => {
-        const selectedItems = keywords.filter((_, index) => 
-        (document.getElementById(`checkbox-${index}`) as HTMLInputElement)?.checked)
-    
-        console.log('Selected Items:', selectedItems)
+    // Save user preferences in the database
+    postUserPreferences(includes, excludes, categories)
 
-        // Save user preferences in the database
-        postUserPreferences(includes, excludes)
-    
-        // Fill database with jobs
-        loadJobs(keywords, excludes)
+    // Fill database with jobs
+    loadJobs(keywords, excludes, categories)
   }
 
   return (
@@ -81,7 +81,7 @@ export default function FilterLayout({includes, excludes}: FilterLayoutProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-2">
           <div className="space-y-2">
             {keywords.map((item, index) => (
               <div key={index} className="flex items-center space-x-2">
@@ -107,15 +107,13 @@ export default function FilterLayout({includes, excludes}: FilterLayoutProps) {
             </Button>
           </div>
           <br />
-            <Link href='/jobs'>
-                <Button 
-                    onClick={handleSubmit} 
-                    className="w-full p-4 font-bold text-md"
-                    >
-                    Start explore jobs
-                    <MoveRight className="ml-2 h-4 w-4"/>
-                </Button>
-            </Link>
+            <Button 
+                onClick={handleSubmit} 
+                className="w-full p-4 font-bold text-lg"
+                >
+                Start explore jobs
+                <MoveRight className="ml-2 h-4 w-4"/>
+            </Button>
         </div>  
       </CardContent>
     </Card>

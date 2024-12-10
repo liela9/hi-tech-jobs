@@ -35,7 +35,7 @@ export async function updateJob(jobId: string, referrerName: string, status: str
       body: JSON.stringify({ id: jobId, referrer: referrerName, status: status })
     })
   } catch (error) {
-    console.log(`Error message: `, error);
+    console.error(`Error message: `, error);
   }
 }
 

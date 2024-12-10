@@ -62,6 +62,12 @@ function canonicalizeUrl(url: string) {
   return parsedUrl.toString();
 }
 
+// Filter data to include items matching the categories
+export function filterByCategory(data: Job[], categories: string[]): Job[] {
+    const regex = new RegExp(categories.join('|'), 'i')
+    return data.filter(item => regex.test(item.department))
+}  
+
 // Filter data to include items matching the keywords
 export function filterByKeywords(data: Job[], keywords: string[]): Job[] {
   const regex = new RegExp(keywords.join('|'), 'i')
@@ -70,6 +76,10 @@ export function filterByKeywords(data: Job[], keywords: string[]): Job[] {
 
 // Filter data to exclude items matching the blacklist
 export function filterOutBlacklist(data: Job[], blacklist: string[]): Job[] {
-  const regex = new RegExp(blacklist.join('|'), 'i')
-  return data.filter(item => !regex.test(item.title))
+    if (blacklist.length === 0) {
+        console.log('efes')
+        return data
+    }
+    const regex = new RegExp(blacklist.join('|'), 'i')
+    return data.filter(item => !regex.test(item.title))
 }

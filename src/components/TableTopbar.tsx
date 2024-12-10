@@ -32,7 +32,7 @@ async function getUserPreferences() {
             method: 'GET',
         })
     } catch (error) {
-        console.log(`Error message: `, error);
+        console.error(`Error message: `, error);
     }
 }
 
@@ -49,7 +49,7 @@ async function handleRefreshData() {
     //             body: JSON.stringify({ jobs: jobs }),
     //         })
     //     } catch (error) {
-    //         console.log(`Error message: `, error);
+    //         console.error(`Error message: `, error);
     //     }
     // }
 }

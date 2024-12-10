@@ -8,7 +8,8 @@ export async function GET() {
     try {
         const includes = await pool.query(`SELECT * FROM includes`);
         const excludes = await pool.query(`SELECT * FROM excludes`);
-        const result = [includes.rows, excludes.rows]
+        const categories = await pool.query(`SELECT * FROM excludes`);
+        const result = [includes.rows, excludes.rows, categories.rows]
 
         return NextResponse.json(result, { status: 200 });
     } catch (error) {
@@ -23,13 +24,14 @@ export async function POST(request: Request) {
     try {
         await pool.query(`DELETE FROM includes`);
         await pool.query(`DELETE FROM excludes`);
+        await pool.query(`DELETE FROM categories`);
     } catch (error) {
         console.error('Database error: ', error);
         return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 });
     }
 
     const data = await request.json()
-    const { includes, excludes } = data
+    const { includes, excludes, categories } = data
 
     try {
         for (const keyword of includes) {         
@@ -48,6 +50,15 @@ export async function POST(request: Request) {
                 VALUES ($1)`;
 
             await pool.query(query, [keyword]);  
+        }
+
+        for (const c of categories) {         
+            // insert category
+            const query = `
+                INSERT INTO categories (category)
+                VALUES ($1)`;
+
+            await pool.query(query, [c]);  
         }
 
         return NextResponse.json({ message: 'User preferences loaded successfully' }, { status: 200 })

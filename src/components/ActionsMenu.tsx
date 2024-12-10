@@ -37,7 +37,7 @@ export async function updateSubmitionTime(row: Job) {
           body: JSON.stringify({ id: id, submition_time: currentTime, status: status })
       })
     } catch (error) {
-      console.log(`Error message: `, error);
+      console.error(`Error message: `, error);
     }
 }
   

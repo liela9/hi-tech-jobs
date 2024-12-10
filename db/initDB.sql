@@ -2,6 +2,7 @@
 --DROP TABLE jobs;
 --DROP TABLE includes;
 --DROP TABLE excludes;
+--DROP TABLE categories;
 
 CREATE table IF NOT EXISTS jobs (
     id SERIAL PRIMARY KEY,
@@ -26,5 +27,10 @@ CREATE table IF NOT EXISTS excludes (
     id SERIAL PRIMARY KEY,
     word VARCHAR(255) NOT NULL
 );  
+
+CREATE table IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    category VARCHAR(255) NOT NULL
+); 
 
 -- DELETE FROM jobs;

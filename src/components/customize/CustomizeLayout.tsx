@@ -42,16 +42,18 @@ const studentInclude = ['student']
 export default function CustomizeLayout() {
   const includesKeywords = new Set<string>()
   const excludesKeywords = new Set<string>()
-
+  const categories = new Set<string>()
+  
   const [includes, setIncludes] = useState<string[]>([]);
   const [excludes, setExcludes] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedItems, setSelectedItems] = useState<{[key: string]: string[]}>({
     category: [],
     level: []
   });
   const [profileReady, setProfileReady] = useState<boolean>(false);
-    
+  
   const handleSelectionChange = (values: string[]) => {
     const currentCardId = cards[currentSlide].id;
     setSelectedItems(prev => ({
@@ -59,20 +61,20 @@ export default function CustomizeLayout() {
       [currentCardId]: values
     }));
   };  
-
+  
   const handleNext = () => {
     if (currentSlide < cards.length - 1) {
       setCurrentSlide((prev) => prev + 1);
     }
   };
-
+  
   const handlePrev = () => {
     if (currentSlide > 0) {
       setCurrentSlide((prev) => prev - 1);
     }
   };
-
-  const handleSubmit = () => {
+  
+  function checkedLevel() {
     if (selectedItems['level'].includes('Mannager')) {
       mannagerInclude.forEach(element => includesKeywords.add(element))
       mannagerExclude.forEach(element => excludesKeywords.add(element))
@@ -91,9 +93,22 @@ export default function CustomizeLayout() {
     if (selectedItems['level'].includes('Student')) {
       studentInclude.forEach(element => includesKeywords.add(element))
     }
+  }
 
+  function checkedCategory() {
+    for (const category of selectedItems['category']) {
+      categories.add(category)
+    }
+  }
+  
+  const handleSubmit = () => {
+    checkedLevel()
+    checkedCategory()
+    
     setIncludes(Array.from(includesKeywords))
-    setExcludes(Array.from(excludesKeywords))  
+    setExcludes(Array.from(excludesKeywords)) 
+    setSelectedCategories(Array.from(categories))
+
     setProfileReady(true)
   };
 
@@ -161,7 +176,7 @@ export default function CustomizeLayout() {
         <Link 
         href={{
           pathname: '/customize/filter',
-          query: { includes: JSON.stringify(Array.from(includes)), excludes: JSON.stringify(Array.from(excludes)) },
+          query: { includes: JSON.stringify(Array.from(includes)), excludes: JSON.stringify(Array.from(excludes)), categories: JSON.stringify(Array.from(selectedCategories)) },
         }}
         >
           <Button 
