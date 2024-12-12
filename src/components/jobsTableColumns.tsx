@@ -54,7 +54,7 @@ export const getColumns = (currentPath: string, categories: string[]): ColumnDef
       {
         accessorKey: "department",
         header: ({ column }) => (
-          <Select onValueChange={value => column.setFilterValue(value === "All departments" ? null : value.toLowerCase())}>
+          <Select onValueChange={value => column.setFilterValue(value === "all departments" ? null : value.toLowerCase())}>
             <SelectTrigger>
                 <SelectValue placeholder="All departments" />
             </SelectTrigger>
@@ -223,11 +223,11 @@ export const getColumns = (currentPath: string, categories: string[]): ColumnDef
     {
       accessorKey: "department",
       header: ({ column }) => (
-        <Select onValueChange={value => column.setFilterValue(value === "All departments" ? null : value.toLowerCase())}>
+        <Select onValueChange={value => column.setFilterValue(value === "all departments" ? null : value.toLowerCase())}>
           <SelectTrigger>
               <SelectValue placeholder="All departments" />
           </SelectTrigger>
-          <SelectContent position="popper">
+          <SelectContent position="popper" className="capitalize">
               {categories.map((department) => (
                   <SelectItem
                       key={department}

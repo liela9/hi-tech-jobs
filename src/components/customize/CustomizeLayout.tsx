@@ -35,7 +35,7 @@ const mannagerInclude = ['mannager', 'leader', 'lead']
 const mannagerExclude = ['student', 'junior', 'senior', 'developer', 'principal', 'architect']
 const experiencedInclude = ['senior', 'developer', 'principal', 'architect']
 const experiencedExclude = ['student', 'junior', 'mannager', 'leader', 'lead']
-const juniorInclude = ['engineer', 'representative', 'developer']
+const juniorInclude = ['engineer', 'developer']
 const juniorExclude = ['mannager', 'leader', 'lead', 'senior', 'principal', 'architect']
 const studentInclude = ['student']
 

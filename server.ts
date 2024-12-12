@@ -6,6 +6,7 @@ import { DatabaseChangeEmitter } from "@/lib/DatabaseChangeEmitter"
 import { getJobs } from '@/app/api/jobs/handler'
 import { getSubmittedJobs } from "@/app/api/jobs/submitted/handler"
 import { getDeletedJobs } from "@/app/api/jobs/deleted/handler"
+import { getUserPreferences } from "@/app/api/filter/handler"
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = 'localhost';
@@ -24,7 +25,8 @@ app.prepare().then(() => {
     socket.emit('get-all-jobs', await getJobs());
     socket.emit('get-submitted-jobs', await getSubmittedJobs());
     socket.emit('get-deleted-jobs', await getDeletedJobs());
-    
+    socket.emit('get-user-preferences', await getUserPreferences())
+
     socket.on('disconnect', () => {
       console.log('Client disconnected');
     });

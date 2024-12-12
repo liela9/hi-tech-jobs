@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/toggle-group"
 
 import { ROOT_PATH } from "@/lib/utils"
-import { MoveRight } from 'lucide-react'
+import { MoveRight, X } from 'lucide-react'
 
 interface FilterLayoutProps {
     includes: string[];
@@ -73,6 +73,11 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
     }
   }
 
+  const handleDeleteItem = (item: string) => {
+    setKeywords((prev) => prev.filter((keyword) => keyword !== item));
+    setSelectedItems((prev) => prev.filter((selected) => selected !== item));
+  };
+
   const handleSelectionChange = (newItems: string[]) => {
     setSelectedItems((prev) => [...new Set([...prev, ...newItems])]);
   };  
@@ -101,11 +106,21 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
           onValueChange={handleSelectionChange}
           >
           {keywords.map((item) => (
+          <div key={item}>
             <ToggleGroupItem value={item}
             className="rounded-lg bg-white text-base text-muted-foreground font-bold "
             key={item}>
               {item}
             </ToggleGroupItem>
+            <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleDeleteItem(item)}
+            className="text-red-500"
+            >
+            <X className="h-4 w-4" />
+            </Button>
+          </div>
           ))}
         </ToggleGroup>
         <br />

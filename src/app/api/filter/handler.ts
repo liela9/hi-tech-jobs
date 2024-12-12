@@ -1,4 +1,4 @@
-import { error } from "console";
+import { ROOT_PATH } from "@/lib/utils";
 
 type Keyword = {
   id: number;
@@ -6,25 +6,24 @@ type Keyword = {
   category?: string;
 };
 
-export const ROOT_PATH = 'http://localhost:3000'
-
 export async function getUserPreferences(): Promise<UserPreferences | undefined>{
   try {
-    const res = await fetch(`${ROOT_PATH}/api/filter`, {
+    const response = await fetch(`${ROOT_PATH}/api/filter`, {
       method: 'GET',
     })
 
-    const data = await res.json()
-    console.log('data:', data)
-    const preferences = [...new Set(data.map((pref: Keyword[]) => pref.map((item: Keyword) => item.word)))]
-    console.log('in getUserPreferences: ', preferences)
-
-    const result = {
-      includes: preferences[0] as string[],
-      excludes: preferences[1] as string[],
-      categories: [...new Set(data.map((pref: Keyword[]) => pref.map((item: Keyword) => item.category)))][2]  as string[]
+    if (!response.ok) {
+      throw new Error('Failed to fetch preferences');
     }
 
+    const data = await response.json()
+
+    const result = {
+      includes: data[0].map((item: Keyword) => item.word),
+      excludes: data[1].map((item: Keyword) => item.word),
+      categories: data[2].map((item: Keyword) => item.category)
+    }
+    
     return result
   } catch (error) {
     console.error(`Error message: `, error);

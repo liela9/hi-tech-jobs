@@ -9,11 +9,11 @@ const DeletedJobsTable = React.lazy(() => import("./deletedJobsTable"))
 
 interface JobsListProps {
   url: string;
-  categories: string[];
 }
 
-export default function JobsList({ url, categories }: JobsListProps) {
+export default function JobsList({ url }: JobsListProps) {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [categoryPreferences, setCategoryPreferences] = useState<string[]>([]);
 
   useEffect(() => {
     const socket = io('http://localhost:3000')
@@ -40,6 +40,10 @@ export default function JobsList({ url, categories }: JobsListProps) {
       }
     });
 
+    socket.on('get-user-preferences', (preferences) => {
+      setCategoryPreferences(preferences.categories)
+    })
+
     socket.on("job-update", (update) => {
 
       // Handle real-time update logic
@@ -65,14 +69,14 @@ export default function JobsList({ url, categories }: JobsListProps) {
       socket.off("job-update");
     };
   }, [url]);
-  console.log('categories in jobslist:', categories)
+
   if ( url === '/api/jobs/deleted') {
     return (
-      <DeletedJobsTable jobs={jobs} currentPath={url.slice(4)} categories={categories}/>
+      <DeletedJobsTable jobs={jobs} currentPath={url.slice(4)} categories={categoryPreferences}/>
     )
   }
 
   return (
-    <JobsTable jobs={jobs} currentPath={url.slice(4)}  categories={categories}/>
+    <JobsTable jobs={jobs} currentPath={url.slice(4)}  categories={categoryPreferences}/>
   )
 }

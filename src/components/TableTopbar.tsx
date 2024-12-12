@@ -16,6 +16,8 @@ import { Table } from "@tanstack/react-table"
 
 import DeleteButton from "./DeleteButton"
 import { changeIsDeleted } from "@/lib/utils"
+import { getUserPreferences } from "@/app/api/filter/handler"
+import { ROOT_PATH } from "@/lib/utils"
 
 interface TableTopbarProps {
     table: Table<Job>;
@@ -25,21 +27,32 @@ interface TableTopbarProps {
 }
 
 async function handleRefreshData() {
-    // const preferences = await getUserPreferences()
-    // console.log('preferences: ', preferences)
+    const preferences = await getUserPreferences()
 
-    // if (preferences) {
-    //     const jobs = await fetchAllJobs(preferences[0], preferences[1])
+    if (preferences) {
+        try {
+            const encodedData = JSON.stringify({ 
+                keywords: preferences.includes, 
+                blacklist: preferences.excludes, 
+                categories: preferences.categories 
+            })
+
+            // read jobs from source
+            const res = await fetch(`${ROOT_PATH}/api/initialization?data=${encodedData}`, {
+                method: 'GET',
+            })
     
-    //     try {
-    //         await fetch(`${ROOT_PATH}/api/jobs`, {
-    //             method: 'POST',
-    //             body: JSON.stringify({ jobs: jobs }),
-    //         })
-    //     } catch (error) {
-    //         console.error(`Error message: `, error);
-    //     }
-    // }
+            const jobs = await res.json()
+    
+            // insert data to DB
+            await fetch(`${ROOT_PATH}/api/jobs`, {
+                method: 'POST',
+                body: JSON.stringify({ jobs: jobs }),
+            })
+        } catch (error) {
+            console.error(`Error message: `, error);
+        }
+    }
 }
 
 function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps) {

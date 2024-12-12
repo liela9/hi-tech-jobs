@@ -2,10 +2,8 @@ import React from 'react'
 
 const JobsList = React.lazy(() => import("@/components/JobsList")) 
 
-export default function DeletedJobsPage() {
-  const url = '/api/jobs/deleted'
-
+export default async function DeletedJobsPage() {
   return (
-    <JobsList url={url}/>
+    <JobsList url='/api/jobs/deleted'/>
   );
 }

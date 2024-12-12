@@ -12,12 +12,8 @@ export async function GET(request: NextRequest) {
 
             await fetchFiles(decodedData.categories)
             const data = loadData(decodedData.categories).flat()
-
             const blacklistFiltered = filterOutBlacklist(data, decodedData.blacklist)
-            // console.log('blacklistFiltered:', result.length)
-
             const result = filterByKeywords(blacklistFiltered, decodedData.keywords)
-            // console.log('result:', keywordFiltered)
 
             return NextResponse.json(result, { status: 200 });
         } catch (error) {

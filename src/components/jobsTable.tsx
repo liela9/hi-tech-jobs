@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table"
-import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -52,9 +52,10 @@ const JobsTable = ({ jobs, currentPath, categories }: JobsTableProps) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>({})
+  const categoryPrefrences = ['all departments'].concat(categories)
 
   const data = useMemo(() => Object.values(jobs), [jobs])
-  const columns = useMemo(() => getColumns(currentPath, categories), [currentPath, categories])
+  const columns = useMemo(() => getColumns(currentPath, categoryPrefrences), [currentPath, categoryPrefrences])
   
   const PAGE_SIZE = 6
   const [pagination, setPagination] = useState<PaginationState>({
