@@ -1,13 +1,12 @@
-import { GET } from './route'
+import { ROOT_PATH } from '@/lib/utils'
 
 export async function getJobs() {
   try {
-      const response = await GET()
-      if (!response.ok) {
-        throw new Error('Failed to fetch jobs');
-      }
-      const data = await response.json();
-      return data
+    const response = await fetch(`${ROOT_PATH}/api/jobs`, {
+      method: 'GET',
+    })
+
+    return await response.json();
   } catch (error) {
     console.error(error);
   } 

@@ -5,9 +5,17 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle } from "@/components/ui/card"
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/ui/toggle-group"
 
-import { ROOT_PATH } from "@/lib/utils";
+import { ROOT_PATH } from "@/lib/utils"
 import { MoveRight } from 'lucide-react'
 
 interface FilterLayoutProps {
@@ -36,12 +44,12 @@ async function postUserPreferences(includes: string[], excludes: string[], categ
         
         const encodedData = JSON.stringify({ keywords: includes, blacklist: excludes, categories: categories })
         
-        // read data from source
+        // read jobs from source
         const res = await fetch(`${ROOT_PATH}/api/initialization?data=${encodedData}`, {
             method: 'GET',
         })
+
         const jobs = await res.json()
-        console.log('jobs:',jobs)
 
         // insert data to DB
         await fetch(`${ROOT_PATH}/api/jobs`, {
@@ -54,26 +62,31 @@ async function postUserPreferences(includes: string[], excludes: string[], categ
 }
 
 export default function FilterLayout({includes, excludes, categories}: FilterLayoutProps) {
-    const [keywords, setKeywords] = useState<string[]>(includes)
-    const [inputValue, setInputValue] = useState<string>('')
+  const [keywords, setKeywords] = useState<string[]>(includes)
+  const [inputValue, setInputValue] = useState<string>('')
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
 
-    const handleAddItem = () => {
-        if (inputValue.trim() && !keywords.includes(inputValue.trim())) {
-            setKeywords([...keywords, inputValue.trim()])
-            setInputValue('')
-        }
+  const handleAddItem = () => {
+    if (inputValue.trim() && !keywords.includes(inputValue.trim())) {
+        setKeywords([...keywords, inputValue.trim()])
+        setInputValue('')
+    }
   }
+
+  const handleSelectionChange = (newItems: string[]) => {
+    setSelectedItems((prev) => [...new Set([...prev, ...newItems])]);
+  };  
 
   const handleSubmit = () => {
     // Save user preferences in the database
-    postUserPreferences(includes, excludes, categories)
+    postUserPreferences(selectedItems, excludes, categories)
 
     // Fill database with jobs
-    loadJobs(keywords, excludes, categories)
+    loadJobs(selectedItems, excludes, categories)
   }
 
   return (
-    <Card className="w-full max-w-md flex flex-col items-center mt-36 p-6">
+    <Card className="w-full max-w-fit max-h-fit flex flex-col items-center p-5">
       <CardHeader>
         <CardTitle>Keywords</CardTitle>
         <CardDescription>
@@ -81,40 +94,40 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <div className="space-y-2">
-            {keywords.map((item, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox 
-                  id={`checkbox-${index}`}
-                />
-                <Label htmlFor={`checkbox-${index}`} className='text-md font-bold'>
-                  {item}
-                </Label>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex space-x-2">
-            <Input 
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Enter new keyword"
-              className="flex-grow"
-              />
-            <Button variant="outline" onClick={handleAddItem}>
-              Add
-            </Button>
-          </div>
-          <br />
-            <Button 
-                onClick={handleSubmit} 
-                className="w-full p-4 font-bold text-lg"
-                >
-                Start explore jobs
-                <MoveRight className="ml-2 h-4 w-4"/>
-            </Button>
-        </div>  
+        <ToggleGroup className="flex flex-col"
+          size="lg"
+          type="multiple"
+          value={selectedItems}
+          onValueChange={handleSelectionChange}
+          >
+          {keywords.map((item) => (
+            <ToggleGroupItem value={item}
+            className="rounded-lg bg-white text-base text-muted-foreground font-bold "
+            key={item}>
+              {item}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <br />
+        <div className="flex space-x-2">
+          <Input 
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Enter new keyword"
+            className="flex-grow"
+            />
+          <Button variant="outline" onClick={handleAddItem}>
+            Add
+          </Button>
+        </div>
+        <br />
+        <Button 
+            onClick={handleSubmit} 
+            className="w-full p-4 font-bold text-lg"
+            >
+            Start explore jobs
+            <MoveRight className="ml-2 h-4 w-4"/>
+        </Button>
       </CardContent>
     </Card>
   )

@@ -16,3 +16,9 @@ type Card = {
     title: string;
     choices: string[];
 }
+
+type UserPreferences = {
+    includes: string[]; 
+    excludes: string[]; 
+    categories: string[];
+}

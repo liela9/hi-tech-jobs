@@ -3,14 +3,16 @@
 import React, { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 
+
 const JobsTable = React.lazy(() => import("./jobsTable")) 
 const DeletedJobsTable = React.lazy(() => import("./deletedJobsTable")) 
 
 interface JobsListProps {
   url: string;
+  categories: string[];
 }
 
-export default function JobsList({ url }: JobsListProps) {
+export default function JobsList({ url, categories }: JobsListProps) {
   const [jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
@@ -39,7 +41,6 @@ export default function JobsList({ url }: JobsListProps) {
     });
 
     socket.on("job-update", (update) => {
-      // console.log("Received update:", update);
 
       // Handle real-time update logic
       if (update.operation === "INSERT") {
@@ -64,15 +65,14 @@ export default function JobsList({ url }: JobsListProps) {
       socket.off("job-update");
     };
   }, [url]);
-
-  
+  console.log('categories in jobslist:', categories)
   if ( url === '/api/jobs/deleted') {
     return (
-      <DeletedJobsTable jobs={jobs} currentPath={url.slice(4)}/>
+      <DeletedJobsTable jobs={jobs} currentPath={url.slice(4)} categories={categories}/>
     )
   }
 
   return (
-    <JobsTable jobs={jobs} currentPath={url.slice(4)}/>
+    <JobsTable jobs={jobs} currentPath={url.slice(4)}  categories={categories}/>
   )
 }

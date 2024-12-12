@@ -3,7 +3,6 @@ import path from 'path'
 import fs from 'fs'
 import Papa from 'papaparse'
 
-import { CATEGORIES } from '@/lib/utils'
 
 const OUTPUT_PATH = 'data/'
 const PATH = 'https://raw.githubusercontent.com/mluggy/techmap/main/jobs/';
@@ -19,15 +18,15 @@ async function getData(filename: string) {
   }
 }
 
-export async function fetchAllFiles() {
-  for (const c of CATEGORIES) {
+export async function fetchFiles(categories: string[]) {
+  for (const c of categories) {
     await getData(`${c}.csv`);
     await new Promise(resolve => setTimeout(resolve, 1000)); // simulate delay
   }
 }
 
-export function loadData() {
-  return CATEGORIES.map(category => {
+export function loadData(categories: string[]) {
+  return categories.map(category => {
     try {
       const csvPath = path.join(OUTPUT_PATH, `${category}.csv`);
       const csvFile = fs.readFileSync(csvPath, 'utf-8');
@@ -77,7 +76,6 @@ export function filterByKeywords(data: Job[], keywords: string[]): Job[] {
 // Filter data to exclude items matching the blacklist
 export function filterOutBlacklist(data: Job[], blacklist: string[]): Job[] {
     if (blacklist.length === 0) {
-        console.log('efes')
         return data
     }
     const regex = new RegExp(blacklist.join('|'), 'i')

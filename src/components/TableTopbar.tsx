@@ -16,8 +16,6 @@ import { Table } from "@tanstack/react-table"
 
 import DeleteButton from "./DeleteButton"
 import { changeIsDeleted } from "@/lib/utils"
-import { ROOT_PATH } from "@/lib/utils"
-
 
 interface TableTopbarProps {
     table: Table<Job>;
@@ -26,19 +24,9 @@ interface TableTopbarProps {
     currentPath: string;
 }
 
-async function getUserPreferences() {
-    try {
-        return await fetch(`${ROOT_PATH}/api/user`, {
-            method: 'GET',
-        })
-    } catch (error) {
-        console.error(`Error message: `, error);
-    }
-}
-
 async function handleRefreshData() {
-    const preferences = await getUserPreferences()
-    console.log('preferences: ', preferences)
+    // const preferences = await getUserPreferences()
+    // console.log('preferences: ', preferences)
 
     // if (preferences) {
     //     const jobs = await fetchAllJobs(preferences[0], preferences[1])

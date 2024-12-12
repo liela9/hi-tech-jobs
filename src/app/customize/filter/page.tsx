@@ -6,6 +6,8 @@ export default function FilterPage({ searchParams }: { searchParams: { includes?
     const categories = searchParams.categories ? JSON.parse(searchParams.categories) : [];
 
     return (
-        <FilterLayout includes={includes} excludes={excludes} categories={categories}/>
+        <div className="flex items-center mt-32">
+            <FilterLayout includes={includes} excludes={excludes} categories={categories}/>
+        </div>
     );
 }

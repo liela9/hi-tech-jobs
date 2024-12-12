@@ -44,16 +44,17 @@ import TableBottombar from "./TableBottombar"
 interface JobsTableProps {
   jobs: Job[];
   currentPath: string;
+  categories: string[];
 }
 
-const JobsTable = ({ jobs, currentPath }: JobsTableProps) => {
+const JobsTable = ({ jobs, currentPath, categories }: JobsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "submition_time", desc: true }])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>({})
 
   const data = useMemo(() => Object.values(jobs), [jobs])
-  const columns = useMemo(() => getColumns(currentPath), [currentPath])
+  const columns = useMemo(() => getColumns(currentPath, categories), [currentPath, categories])
   
   const PAGE_SIZE = 6
   const [pagination, setPagination] = useState<PaginationState>({

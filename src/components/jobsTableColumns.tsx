@@ -18,18 +18,8 @@ import ActionsMenu from "./ActionsMenu"
 import EditDialog from "./EditDialog"
 import { ROOT_PATH } from "@/lib/utils"
 
-const DEPARTMENTS = [
-  'All departments',
-  'Data-science',
-  'Frontend',
-  'Hardware',
-  'QA',
-  'Security',
-  'Software',
-  'Support',
-]
 
-export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
+export const getColumns = (currentPath: string, categories: string[]): ColumnDef<Job>[] => {
     if ( currentPath === '/jobs/submitted' ) {
     return [
       {
@@ -68,11 +58,11 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
             <SelectTrigger>
                 <SelectValue placeholder="All departments" />
             </SelectTrigger>
-            <SelectContent position="popper">
-                {DEPARTMENTS.map((department) => (
+            <SelectContent position="popper" className="capitalize">
+                {categories.map((department) => (
                     <SelectItem
                         key={department}
-                        value={department.toString()}
+                        value={department}
                     >
                         {department}
                     </SelectItem>
@@ -238,7 +228,7 @@ export const getColumns = (currentPath: string): ColumnDef<Job>[] => {
               <SelectValue placeholder="All departments" />
           </SelectTrigger>
           <SelectContent position="popper">
-              {DEPARTMENTS.map((department) => (
+              {categories.map((department) => (
                   <SelectItem
                       key={department}
                       value={department.toString()}

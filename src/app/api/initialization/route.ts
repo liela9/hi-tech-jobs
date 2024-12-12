@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { fetchAllFiles, filterByCategory, filterByKeywords, filterOutBlacklist, loadData } from "./handler";
+import { fetchFiles, filterByCategory, filterByKeywords, filterOutBlacklist, loadData } from "./handler";
 
 // Get raw data
 export async function GET(request: NextRequest) {
@@ -9,18 +9,15 @@ export async function GET(request: NextRequest) {
     if (encodedData) {
         try {
             const decodedData = JSON.parse(decodeURIComponent(encodedData))
-            console.log('decodedData:', decodedData)
 
-            await fetchAllFiles()
-            const data = loadData().flat()
-            const categoryFiltered = filterByCategory(data, decodedData.categories)
-            console.log('categoryFiltered:', categoryFiltered.length)
+            await fetchFiles(decodedData.categories)
+            const data = loadData(decodedData.categories).flat()
 
-            const keywordFiltered = filterByKeywords(categoryFiltered, decodedData.keywords)
-            console.log('keywordFiltered:', keywordFiltered)
+            const blacklistFiltered = filterOutBlacklist(data, decodedData.blacklist)
+            // console.log('blacklistFiltered:', result.length)
 
-            const result = filterOutBlacklist(keywordFiltered, decodedData.blacklist)
-            console.log('blacklistFiltered:', result.length)
+            const result = filterByKeywords(blacklistFiltered, decodedData.keywords)
+            // console.log('result:', keywordFiltered)
 
             return NextResponse.json(result, { status: 200 });
         } catch (error) {

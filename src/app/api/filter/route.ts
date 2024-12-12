@@ -6,9 +6,10 @@ import pool from "@/lib/db";
 // Get user preferences
 export async function GET() {
     try {
-        const includes = await pool.query(`SELECT * FROM includes`);
-        const excludes = await pool.query(`SELECT * FROM excludes`);
-        const categories = await pool.query(`SELECT * FROM excludes`);
+        const includes = await pool.query(`SELECT word FROM includes`);
+        const excludes = await pool.query(`SELECT word FROM excludes`);
+        const categories = await pool.query(`SELECT category FROM categories`);
+ 
         const result = [includes.rows, excludes.rows, categories.rows]
 
         return NextResponse.json(result, { status: 200 });

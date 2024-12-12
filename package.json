@@ -6,7 +6,7 @@
   "scripts": {
     "env-test": "echo $DB_USER $DB_PASSWORD $DB_HOST $DB_PORT $DB_NAME",
     "dev": "npx tsx server.ts",
-    "prebuild": "psql -U $DB_USER -h $DB_HOST -p $DB_PORT -d $DB_NAME -f db/initDB.sql",
+    "prebuild": "export $(grep -v '^#' .env.local | xargs) && psql -U $DB_USER -h $DB_HOST -p $DB_PORT -d $DB_NAME -f db/initDB.sql",
     "build": "next build",
     "start": "NODE_ENV=production npx tsx server.ts",
     "lint": "next lint"
