@@ -14,6 +14,7 @@ type Job = {
 type Card = {
     id: string;
     title: string;
+    description?: string;
     choices: string[];
 }
 

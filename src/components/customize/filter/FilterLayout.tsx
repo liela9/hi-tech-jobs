@@ -1,13 +1,15 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { ChevronLeft, ChevronRight, MoveRight, X } from "lucide-react"
+
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, 
+  CardFooter, 
   CardContent, 
-  CardDescription, 
   CardHeader, 
+  CardDescription,
   CardTitle } from "@/components/ui/card"
 import {
   ToggleGroup,
@@ -15,7 +17,7 @@ import {
 } from "@/components/ui/toggle-group"
 
 import { ROOT_PATH } from "@/lib/utils"
-import { MoveRight, X } from 'lucide-react'
+import { CATEGORIES } from "@/lib/utils"
 
 interface FilterLayoutProps {
     includes: string[];
@@ -36,133 +38,202 @@ async function postUserPreferences(includes: string[], excludes: string[], categ
     console.error(`Error message: `, error);
   }
 }
-  
-  async function loadJobs(includes: string[], excludes: string[], categories: string[]) {
-    try {
-        // clear jobs table from previous data
-        await fetch(`${ROOT_PATH}/api/jobs`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          }, 
-        })
-        
-        const encodedData = JSON.stringify({ keywords: includes, blacklist: excludes, categories: categories })
-        
-        // read jobs from source
-        const res = await fetch(`${ROOT_PATH}/api/initialization?data=${encodedData}`, {
-            method: 'GET',
-        })
 
-        const jobs = await res.json()
-
-        // insert data to DB
-        await fetch(`${ROOT_PATH}/api/jobs`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            }, 
-            body: JSON.stringify({ jobs: jobs }),
-        })
-    } catch (error) {
-        console.error(`Error message: `, error);
-    }
+async function loadJobs(includes: string[], excludes: string[], categories: string[]) {
+  try {
+    // clear jobs table from previous data
+    await fetch(`${ROOT_PATH}/api/jobs`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }, 
+    })
+    
+    const encodedData = JSON.stringify({ keywords: includes, blacklist: excludes, categories: categories })
+    
+    // read jobs from source
+    const res = await fetch(`${ROOT_PATH}/api/initialization?data=${encodedData}`, {
+      method: 'GET',
+    })
+    
+    const jobs = await res.json()
+    
+    // insert data to DB
+    await fetch(`${ROOT_PATH}/api/jobs`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify({ jobs: jobs }),
+    })
+  } catch (error) {
+    console.error(`Error message: `, error);
+  }
 }
 
 export default function FilterLayout({includes, excludes, categories}: FilterLayoutProps) {
   const [keywords, setKeywords] = useState<string[]>(includes)
   const [inputValue, setInputValue] = useState<string>('')
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
-  const router = useRouter()
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [selectedItems, setSelectedItems] = useState<{[key: string]: string[]}>({
+    includes: [],
+    excludes: []
+  });  
+  
+  const [cards, setCards] = useState([
+    {
+      id: "includes",
+      title: "Choose includes",
+      description: "Select keywords to be included in jobs title",
+      choices: includes
+    },
+    {
+      id: "excludes",
+      title: "Choose excludes",
+      description: "Select keywords that jobs containing them WILL NOT be displayed",
+      choices: excludes
+    },
+  ])
 
   const handleAddItem = () => {
-    if (inputValue.trim() && !keywords.includes(inputValue.trim())) {
-        setKeywords([...keywords, inputValue.trim()])
-        setInputValue('')
-    }
+    const currentCardId = cards[currentSlide].id;
+    const item = inputValue.trim()
+
+    if (item === '') return; 
+
+    cards[currentSlide].choices.push(item)
+    setSelectedItems((prev) => ({
+      ...prev,
+      [currentCardId]: [...prev[currentCardId], item], 
+    }));
+
+    setInputValue(''); // clear the input field
   }
 
-  const handleDeleteItem = (item: string) => {
-    setKeywords((prev) => prev.filter((keyword) => keyword !== item));
-    setSelectedItems((prev) => prev.filter((selected) => selected !== item));
+  const handleDeleteItem = (itemToRemove: string) => {
+    const currentCardId = cards[currentSlide].id;
+
+    setCards((prevCards) => {
+      const updatedCards = [...prevCards];
+      updatedCards[currentSlide] = {
+        ...updatedCards[currentSlide],
+        choices: updatedCards[currentSlide].choices.filter((item) => item !== itemToRemove),
+      };
+      return updatedCards;
+    });
+
+    setSelectedItems((prev) => ({
+      ...prev,
+      [currentCardId]: prev[currentCardId].filter((item) => item !== itemToRemove), 
+    }));
   };
 
   const handleSelectionChange = (newItems: string[]) => {
-    setSelectedItems((prev) => [...new Set([...prev, ...newItems])]);
+    const currentCardId = cards[currentSlide].id;
+    setSelectedItems(prev => ({
+      ...prev,
+      [currentCardId]: newItems
+    }));
   };  
 
-  const handleSubmit = () => {
-    let blacklist = []
-    // the blacklist will contain the words in 'excludes' and not in 'includes'
-    for (const word of excludes) {
-      if (!selectedItems.includes(word)) {
-        blacklist.push(word)
-      }
+  const handleNext = () => {
+    if (currentSlide < cards.length - 1) {
+      setCurrentSlide((prev) => prev + 1);
     }
+  };
+  
+  const handlePrev = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide((prev) => prev - 1);
+    }
+  };
 
-    // Save user preferences in the database
-    postUserPreferences(selectedItems, blacklist, categories)
+  const handleSubmit = () => {
 
-    // Fill database with jobs
-    loadJobs(selectedItems, blacklist, categories)
-
-    router.push(`${ROOT_PATH}/jobs`)
   }
 
   return (
-    <Card className="w-full max-w-fit max-h-fit flex flex-col items-center p-5">
-      <CardHeader>
-        <CardTitle>Keywords</CardTitle>
-        <CardDescription>
-            Select the keywords you want to see in job titles.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ToggleGroup className="flex flex-col"
-          size="lg"
-          type="multiple"
-          value={selectedItems}
-          onValueChange={handleSelectionChange}
-          >
-          {keywords.map((item) => (
-          <div key={item}>
-            <ToggleGroupItem value={item}
-            className="rounded-lg bg-white text-base text-muted-foreground font-bold "
-            key={item}>
-              {item}
-            </ToggleGroupItem>
-            <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleDeleteItem(item)}
-            className="text-red-500"
-            >
-            <X className="h-4 w-4" />
-            </Button>
-          </div>
-          ))}
-        </ToggleGroup>
-        <br />
-        <div className="flex space-x-2">
-          <Input 
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Enter new keyword"
-            className="flex-grow"
-            />
-          <Button variant="outline" onClick={handleAddItem}>
-            Add
-          </Button>
-        </div>
-        <br />
-        <Button 
-            onClick={handleSubmit} 
-            className="w-full p-4 font-bold text-lg"
-            >
-            Start explore jobs
-            <MoveRight className="ml-2 h-4 w-4"/>
-        </Button>
-      </CardContent>
-    </Card>
-  )
+    <div className="flex flex-col max-w-fit max-h-full items-center">
+        <Card className="w-full">
+          <CardHeader className='gap-3'>
+            <CardTitle className="text-center">{cards[currentSlide].title}</CardTitle>
+            <CardDescription>{cards[currentSlide].description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ToggleGroup 
+              className="flex flex-col"
+              size="lg"
+              type="multiple"
+              value={selectedItems[cards[currentSlide].id]}
+              onValueChange={handleSelectionChange}
+              >
+              {cards[currentSlide].choices.map((choice) => (
+                <div key={choice}>
+                <ToggleGroupItem value={choice}
+                className="rounded-lg bg-white text-base text-muted-foreground font-bold"
+                key={choice}>
+                  {choice}
+                </ToggleGroupItem>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleDeleteItem(choice)}
+                  className="text-red-500"
+                  >
+                  <X className="h-4 w-4" />
+                </Button>
+                </div>
+                
+              ))}
+            </ToggleGroup>
+            <br />
+            <div className="flex space-x-2">
+              <Input 
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Enter new keyword"
+                className="flex-grow"
+                />
+              <Button variant="outline" onClick={handleAddItem}>
+                Add
+              </Button>
+            </div>
+          </CardContent>
+          <CardFooter className="w-full bg-slate-100 p-4">
+            <div className="w-full flex justify-between">
+                <Button
+                    className=" hover:bg-white"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handlePrev}
+                    disabled={currentSlide === 0}
+                    >
+                    <ChevronLeft className="mr-2 h-4 w-4" />
+                    Back
+                </Button>
+                {currentSlide < cards.length - 1 ? (
+                  <Button
+                  className="hover:bg-white"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleNext}
+                  disabled={currentSlide === cards.length - 1}
+                  >
+                    Next
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button 
+                  className="bg-black"
+                  size="sm"
+                  onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
+                )}
+            </div>
+          </CardFooter>
+      </Card> 
+    </div>
+  );
 }
