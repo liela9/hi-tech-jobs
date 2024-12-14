@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Checkbox } from "@/components/ui/checkbox"
+import { useRouter } from 'next/navigation'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { Card, 
   CardContent, 
   CardDescription, 
@@ -25,21 +24,27 @@ interface FilterLayoutProps {
 }
 
 async function postUserPreferences(includes: string[], excludes: string[], categories: string[]) {
-    try {
-      await fetch(`${ROOT_PATH}/api/filter`, {
-        method: 'POST',
-        body: JSON.stringify({ includes: includes, excludes: excludes, categories: categories}),
-      })
-    } catch (error) {
-      console.error(`Error message: `, error);
-    }
+  try {
+    await fetch(`${ROOT_PATH}/api/filter`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify({ includes: includes, excludes: excludes, categories: categories}),
+    })
+  } catch (error) {
+    console.error(`Error message: `, error);
   }
+}
   
   async function loadJobs(includes: string[], excludes: string[], categories: string[]) {
     try {
         // clear jobs table from previous data
         await fetch(`${ROOT_PATH}/api/jobs`, {
-            method: 'DELETE',
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }, 
         })
         
         const encodedData = JSON.stringify({ keywords: includes, blacklist: excludes, categories: categories })
@@ -54,6 +59,9 @@ async function postUserPreferences(includes: string[], excludes: string[], categ
         // insert data to DB
         await fetch(`${ROOT_PATH}/api/jobs`, {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }, 
             body: JSON.stringify({ jobs: jobs }),
         })
     } catch (error) {
@@ -65,6 +73,7 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
   const [keywords, setKeywords] = useState<string[]>(includes)
   const [inputValue, setInputValue] = useState<string>('')
   const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const router = useRouter()
 
   const handleAddItem = () => {
     if (inputValue.trim() && !keywords.includes(inputValue.trim())) {
@@ -83,11 +92,21 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
   };  
 
   const handleSubmit = () => {
+    let blacklist = []
+    // the blacklist will contain the words in 'excludes' and not in 'includes'
+    for (const word of excludes) {
+      if (!selectedItems.includes(word)) {
+        blacklist.push(word)
+      }
+    }
+
     // Save user preferences in the database
-    postUserPreferences(selectedItems, excludes, categories)
+    postUserPreferences(selectedItems, blacklist, categories)
 
     // Fill database with jobs
-    loadJobs(selectedItems, excludes, categories)
+    loadJobs(selectedItems, blacklist, categories)
+
+    router.push(`${ROOT_PATH}/jobs`)
   }
 
   return (

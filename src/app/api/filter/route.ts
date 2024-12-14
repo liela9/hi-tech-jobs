@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import pool from "@/lib/db";
 
@@ -20,7 +20,7 @@ export async function GET() {
 }
 
 // Insert user preferences
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     // reset preferences
     try {
         await pool.query(`DELETE FROM includes`);

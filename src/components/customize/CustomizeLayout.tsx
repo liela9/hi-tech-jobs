@@ -32,10 +32,10 @@ const cards: Card[] = [
 ]
 
 const mannagerInclude = ['mannager', 'leader', 'lead']
-const mannagerExclude = ['student', 'junior', 'senior', 'developer', 'principal', 'architect']
-const experiencedInclude = ['senior', 'developer', 'principal', 'architect']
+const mannagerExclude = ['student', 'junior', 'senior', 'engineer', 'developer', 'principal', 'architect']
+const experiencedInclude = ['senior', 'engineer', 'developer', 'principal', 'architect']
 const experiencedExclude = ['student', 'junior', 'mannager', 'leader', 'lead']
-const juniorInclude = ['engineer', 'developer']
+const juniorInclude = ['junior', 'engineer', 'developer']
 const juniorExclude = ['mannager', 'leader', 'lead', 'senior', 'principal', 'architect']
 const studentInclude = ['student']
 
@@ -184,6 +184,7 @@ export default function CustomizeLayout() {
             size="sm"
             >
             Custom filtering
+            <MoveRight className="ml-2 h-4 w-4"/>
           </Button>
         </Link>
       )}

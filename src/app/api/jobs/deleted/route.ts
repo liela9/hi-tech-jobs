@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"
 
-import pool from "@/lib/db";
+import pool from "@/lib/db"
 
 
 // Get all deleted jobs
@@ -18,8 +18,8 @@ export async function GET() {
 }
 
 // Turn isDeleted value
-export async function PATCH(request: Request) {
-    const data: Job = await request.json()
+export async function PATCH(request: NextRequest) {
+    const data = await request.json()
     const { id } = data
 
     try {

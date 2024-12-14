@@ -32,6 +32,9 @@ export async function updateJob(jobId: string, referrerName: string, status: str
   try {
     await fetch(`${ROOT_PATH}/api/jobs/submitted`, {
       method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      }, 
       body: JSON.stringify({ id: jobId, referrer: referrerName, status: status })
     })
   } catch (error) {

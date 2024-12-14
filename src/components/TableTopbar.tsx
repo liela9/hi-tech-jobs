@@ -47,6 +47,9 @@ async function handleRefreshData() {
             // insert data to DB
             await fetch(`${ROOT_PATH}/api/jobs`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }, 
                 body: JSON.stringify({ jobs: jobs }),
             })
         } catch (error) {
@@ -70,6 +73,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                 <form>
                     {Object.keys(rowSelection).length > 0 && currentPath === "/jobs/deleted" ? (
                         <Button
+                        type="button"
                         variant="outline"
                         className="ml-4"
                         onClick={() => changeIsDeleted(rowSelection, data)}

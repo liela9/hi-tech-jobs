@@ -11,6 +11,7 @@ interface DeleteButtonProps {
 function DeleteButton({rowSelection, data}: DeleteButtonProps) {
     return (
         <Button
+            type="button"
             variant="destructive"
             className="ml-4"
             onClick={() => changeIsDeleted(rowSelection, data)}

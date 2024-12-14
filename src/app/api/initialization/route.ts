@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { fetchFiles, filterByCategory, filterByKeywords, filterOutBlacklist, loadData } from "./handler";
+import { fetchFiles, filterByKeywords, filterOutBlacklist, loadData } from "./handler";
 
 // Get raw data
 export async function GET(request: NextRequest) {

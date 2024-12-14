@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import pool from "@/lib/db";
 
@@ -18,7 +18,7 @@ export async function GET() {
 }
 
 // Update submition time
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
     const data: Job = await request.json()
     const { id, submition_time, status } = data
 
@@ -57,7 +57,7 @@ export async function PATCH(request: Request) {
 
 
 // Insert new jobs
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     const data = await request.json()
     const { jobs } = data
 
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 }
 
 // Clear jobs table
-export async function DELETE(request: Request) {
+export async function DELETE() {
     try {    
         await pool.query(`DELETE FROM jobs`)
 

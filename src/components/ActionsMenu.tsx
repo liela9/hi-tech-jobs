@@ -1,5 +1,5 @@
 import React from "react"
-import { MoreHorizontal, Trash2 } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -26,42 +26,47 @@ function getTime() {
   return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`
 }
 
-export async function updateSubmitionTime(row: Job) {
+function ActionsMenu(row: Job) { 
+  const updateSubmitionTime = async (row: Job) => {
     const { id } = row
     const currentTime = getTime()
     const status = 'applied'
     
     try {
       await fetch(`${ROOT_PATH}/api/jobs`, {
-          method: 'PATCH',
-          body: JSON.stringify({ id: id, submition_time: currentTime, status: status })
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify({ id: id, submition_time: currentTime, status: status })
       })
+
+      window.location.reload();
     } catch (error) {
       console.error(`Error message: `, error);
     }
-}
-  
-function ActionsMenu(row: Job) {
-    return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent >
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Button variant='ghost' onClick={() => {updateSubmitionTime(row)}}>Submitted</Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <DeleteButton data={[row]}/>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-    )
+  }
+
+  return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent >
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Button variant='ghost' onClick={() => {updateSubmitionTime(row)}}>Submitted</Button>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DeleteButton data={[row]}/>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+  )
 }
 
 export default ActionsMenu;
