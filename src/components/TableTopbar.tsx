@@ -1,3 +1,5 @@
+import { ChevronDown, FolderOutput } from "lucide-react"
+import { Table } from "@tanstack/react-table"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -11,8 +13,7 @@ import { Tooltip,
 } from '@/components/ui/tooltip'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ChevronDown, FolderOutput } from "lucide-react"
-import { Table } from "@tanstack/react-table"
+import { useToast } from "@/hooks/use-toast"
 
 import DeleteButton from "./DeleteButton"
 import { changeIsDeleted } from "@/lib/utils"
@@ -59,6 +60,24 @@ async function handleRefreshData() {
 }
 
 function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps) {
+    const { toast } = useToast()
+
+    const handleRestore = () => {
+        changeIsDeleted(rowSelection, data)
+        
+        toast({
+            title: "Job(s) restored to main list!",
+            description: (
+                <div>
+                    <p>Refresh the browser for updated list.</p>
+                    <p className="font-bold">Make sure you clicked once.</p>
+                </div>
+            ),
+            duration: 5000,
+            className: "bg-white",
+        })
+    }
+
     return (
         <div className="flex py-4 justify-between">
             <div className="flex flex-initial w-full">
@@ -76,7 +95,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                         type="button"
                         variant="outline"
                         className="ml-4"
-                        onClick={() => changeIsDeleted(rowSelection, data)}
+                        onClick={handleRestore}
                     >
                     <FolderOutput className="mr-2 h-4 w-4"/>
                         Restore
@@ -98,7 +117,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>refresh to get new posted jobs</p>
+                            <p>Refresh to get new posted jobs</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/hooks/use-toast'
 
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
@@ -67,6 +68,8 @@ async function loadJobs(includes: string[], excludes: string[], categories: stri
       }, 
       body: JSON.stringify({ jobs: jobs }),
     })
+
+    return jobs.length;
   } catch (error) {
     console.error(`Error message: `, error);
   }
@@ -74,6 +77,7 @@ async function loadJobs(includes: string[], excludes: string[], categories: stri
 
 export default function FilterLayout({includes, excludes, categories}: FilterLayoutProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [inputValue, setInputValue] = useState<string>('')
   const [currentSlide, setCurrentSlide] = useState(0)
   const [selectedItems, setSelectedItems] = useState<{[key: string]: string[]}>({
@@ -139,10 +143,10 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let blacklist = []
-    const userIncludes = cards[0].choices
-    const userExcludes = cards[1].choices
+    const userIncludes = selectedItems.includes
+    const userExcludes = selectedItems.excludes
 
     // the blacklist will contain the words in 'excludes' and not in 'includes'
     for (const word of userExcludes) {
@@ -155,7 +159,14 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
     postUserPreferences(userIncludes, blacklist, categories)
 
     // Fill database with jobs
-    loadJobs(userIncludes, blacklist, categories)
+    const no_of_jobs = await loadJobs(userIncludes, blacklist, categories)
+
+    toast({
+      title: "Yay!",
+      description: `${no_of_jobs} jobs were found.`,
+      duration: 5000,
+      className: "bg-white",
+    })
 
     router.push(`${ROOT_PATH}/jobs`)
   }
@@ -192,7 +203,7 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
                 className="flex-grow"
                 />
               <Button variant="outline" onClick={handleAddItem}>
-                Add
+                Add yours
               </Button>
             </div>
           </CardContent>

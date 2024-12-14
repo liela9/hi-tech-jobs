@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 
 import "./globals.css"
 import Topbar from "./Topbar"
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Job Search",
@@ -18,6 +19,7 @@ export default function RootLayout({
         <div>
           <Topbar/>
           <main className="py-[12px] px-[32px] flex flex-col overflow-auto items-center">{children}</main>
+          <Toaster />
         </div>
       </body>
     </html>
