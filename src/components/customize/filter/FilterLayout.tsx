@@ -1,7 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ChevronLeft, ChevronRight, MoveRight, X } from "lucide-react"
+import { useRouter } from 'next/navigation'
+
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -17,12 +19,11 @@ import {
 } from "@/components/ui/toggle-group"
 
 import { ROOT_PATH } from "@/lib/utils"
-import { CATEGORIES } from "@/lib/utils"
 
 interface FilterLayoutProps {
-    includes: string[];
-    excludes: string[];
-    categories: string[];
+  includes: string[];
+  excludes: string[];
+  categories: string[];
 }
 
 async function postUserPreferences(includes: string[], excludes: string[], categories: string[]) {
@@ -72,7 +73,7 @@ async function loadJobs(includes: string[], excludes: string[], categories: stri
 }
 
 export default function FilterLayout({includes, excludes, categories}: FilterLayoutProps) {
-  const [keywords, setKeywords] = useState<string[]>(includes)
+  const router = useRouter()
   const [inputValue, setInputValue] = useState<string>('')
   const [currentSlide, setCurrentSlide] = useState(0)
   const [selectedItems, setSelectedItems] = useState<{[key: string]: string[]}>({
@@ -101,32 +102,22 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
 
     if (item === '') return; 
 
-    cards[currentSlide].choices.push(item)
     setSelectedItems((prev) => ({
       ...prev,
       [currentCardId]: [...prev[currentCardId], item], 
     }));
 
-    setInputValue(''); // clear the input field
-  }
-
-  const handleDeleteItem = (itemToRemove: string) => {
-    const currentCardId = cards[currentSlide].id;
-
     setCards((prevCards) => {
       const updatedCards = [...prevCards];
       updatedCards[currentSlide] = {
         ...updatedCards[currentSlide],
-        choices: updatedCards[currentSlide].choices.filter((item) => item !== itemToRemove),
+        choices: [...updatedCards[currentSlide].choices, inputValue.trim()],
       };
       return updatedCards;
-    });
+    });  
 
-    setSelectedItems((prev) => ({
-      ...prev,
-      [currentCardId]: prev[currentCardId].filter((item) => item !== itemToRemove), 
-    }));
-  };
+    setInputValue(''); // clear the input field
+  }
 
   const handleSelectionChange = (newItems: string[]) => {
     const currentCardId = cards[currentSlide].id;
@@ -149,7 +140,24 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
   };
 
   const handleSubmit = () => {
+    let blacklist = []
+    const userIncludes = cards[0].choices
+    const userExcludes = cards[1].choices
 
+    // the blacklist will contain the words in 'excludes' and not in 'includes'
+    for (const word of userExcludes) {
+      if (!userIncludes.includes(word)) {
+        blacklist.push(word)
+      }
+    }
+
+    // Save user preferences in the database
+    postUserPreferences(userIncludes, blacklist, categories)
+
+    // Fill database with jobs
+    loadJobs(userIncludes, blacklist, categories)
+
+    router.push(`${ROOT_PATH}/jobs`)
   }
 
   return (
@@ -168,22 +176,11 @@ export default function FilterLayout({includes, excludes, categories}: FilterLay
               onValueChange={handleSelectionChange}
               >
               {cards[currentSlide].choices.map((choice) => (
-                <div key={choice}>
                 <ToggleGroupItem value={choice}
                 className="rounded-lg bg-white text-base text-muted-foreground font-bold"
                 key={choice}>
                   {choice}
                 </ToggleGroupItem>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDeleteItem(choice)}
-                  className="text-red-500"
-                  >
-                  <X className="h-4 w-4" />
-                </Button>
-                </div>
-                
               ))}
             </ToggleGroup>
             <br />
