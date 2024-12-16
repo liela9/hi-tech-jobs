@@ -19,7 +19,6 @@ export const CATEGORIES = [
 
 export async function turnIsDeleted(jobs: Job[]) {
   for (const element of jobs) {
-    console.log('element.id:', element.id)
     try {
       await fetch(`${ROOT_PATH}/api/jobs/deleted`, {
           method: 'PATCH',

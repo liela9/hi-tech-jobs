@@ -48,7 +48,6 @@ app.prepare().then(() => {
 
       // Broadcast changes to all connected clients
       dbEmitter.on("change", (change) => {
-        // console.log("Broadcasting change: ", change)
         io.emit("job-update", change); // Emit the change event to all clients
       });
 

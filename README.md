@@ -34,3 +34,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 * Database -> [postgresql](https://www.postgresql.org/)
 
+## TODOs
+* favicon doesn't show, should also be replaced
