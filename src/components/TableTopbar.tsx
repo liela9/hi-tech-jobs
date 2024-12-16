@@ -80,7 +80,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
 
     return (
         <div className="flex py-4 justify-between">
-            <div className="flex flex-initial w-full">
+            <div className="flex flex-initial w-full gap-4">
                 <Input
                 placeholder="Filter..."
                 value={(table.getState().globalFilter as string) ?? ""}
@@ -105,6 +105,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                     }
                 </form>
             </div>
+            {currentPath === "/jobs" && (
             <div className="flex gap-4">
                 <TooltipProvider>
                     <Tooltip>
@@ -147,7 +148,7 @@ function TableTopbar({table, rowSelection, data, currentPath}: TableTopbarProps)
                         })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-            </div>
+            </div>)}
         </div>
     )
 }

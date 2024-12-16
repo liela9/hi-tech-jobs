@@ -31,8 +31,8 @@ function DeleteButton({rowSelection, data}: DeleteButtonProps) {
     return (
         <Button
             type="button"
-            variant="destructive"
-            className="ml-4"
+            variant='ghost'
+            className="text-red-500"
             onClick={handleDelete}
             >
             <Trash2 className="mr-2 h-4 w-4" />
