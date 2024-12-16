@@ -16,7 +16,6 @@ import {
 
 import ActionsMenu from "./ActionsMenu"
 import EditDialog from "./EditDialog"
-import { ROOT_PATH } from "@/lib/utils"
 
 
 export const getColumns = (currentPath: string, categories: string[]): ColumnDef<Job>[] => {

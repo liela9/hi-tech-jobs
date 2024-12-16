@@ -27,16 +27,16 @@ const cards: Card[] = [
   {
     id: "level",
     title: "What is your experience level?",
-    choices: ['Mannager', 'Experienced', 'Junior', 'Student']
+    choices: ['Manager', 'Experienced', 'Junior', 'Student']
   },
 ]
 
-const mannagerInclude = ['mannager', 'leader', 'lead']
-const mannagerExclude = ['student', 'junior', 'senior', 'engineer', 'developer', 'principal', 'architect']
+const managerInclude = ['manager', 'leader', 'lead']
+const managerExclude = ['student', 'junior', 'senior', 'engineer', 'developer', 'principal', 'architect']
 const experiencedInclude = ['senior', 'engineer', 'developer', 'principal', 'architect']
-const experiencedExclude = ['student', 'junior', 'mannager', 'leader', 'lead']
+const experiencedExclude = ['student', 'junior', 'manager', 'leader', 'lead']
 const juniorInclude = ['junior', 'engineer', 'developer']
-const juniorExclude = ['mannager', 'leader', 'lead', 'senior', 'principal', 'architect']
+const juniorExclude = ['manager', 'leader', 'lead', 'senior', 'principal', 'architect']
 const studentInclude = ['student']
 
 export default function CustomizeLayout() {
@@ -75,9 +75,9 @@ export default function CustomizeLayout() {
   };
   
   function checkedLevel() {
-    if (selectedItems['level'].includes('Mannager')) {
-      mannagerInclude.forEach(element => includesKeywords.add(element))
-      mannagerExclude.forEach(element => excludesKeywords.add(element))
+    if (selectedItems['level'].includes('Manager')) {
+      managerInclude.forEach(element => includesKeywords.add(element))
+      managerExclude.forEach(element => excludesKeywords.add(element))
     }
     
     if (selectedItems['level'].includes('Experienced')) {

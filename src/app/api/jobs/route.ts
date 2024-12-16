@@ -4,7 +4,7 @@ import pool from "@/lib/db";
 
 
 // Get all new jobs
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
     try {
         const result = await pool.query(
             `SELECT * FROM jobs
@@ -18,7 +18,7 @@ export async function GET() {
 }
 
 // Update submition time
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest): Promise<NextResponse> {
     const data: Job = await request.json()
     const { id, submition_time, status } = data
 
@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest) {
 
 
 // Insert new jobs
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
     const data = await request.json()
     const { jobs } = data
 
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Clear jobs table
-export async function DELETE() {
+export async function DELETE(): Promise<NextResponse> {
     try {    
         await pool.query(`DELETE FROM jobs`)
 

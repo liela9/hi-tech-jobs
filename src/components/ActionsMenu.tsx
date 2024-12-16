@@ -14,7 +14,7 @@ import { ROOT_PATH } from "@/lib/utils"
 import DeleteButton from "./DeleteButton"
 
 
-function getTime() {
+function getTime(): string {
   const currentDate = new Date()
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth() + 1

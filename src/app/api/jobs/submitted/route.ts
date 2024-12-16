@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import pool from '../../../../lib/db';
+import pool from "@/lib/db";
 
 
 // Get all submitted jobs
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
     try {
         const result = await pool.query(
             `SELECT * FROM jobs
@@ -19,7 +19,7 @@ export async function GET() {
 }
 
 // Update referrer or/and status
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest): Promise<NextResponse> {
     const data: Job = await request.json()
     const { id, referrer, status } = data
 

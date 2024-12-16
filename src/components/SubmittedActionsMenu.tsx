@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-function SubmittedActionsMenu(row: Job) {
-  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+function SubmittedActionsMenu() {
+  const [isDropdownMenuOpen, setDropdownMenuOpen] = useState(false)
 
   return (
     <DropdownMenu>

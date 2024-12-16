@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchFiles, filterByKeywords, filterOutBlacklist, loadData } from "./handler";
 
 // Get raw data
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
     const encodedData = request.nextUrl.searchParams.get('data')
 
     if (encodedData) {
@@ -20,5 +20,7 @@ export async function GET(request: NextRequest) {
             console.error('Error loading data:', error)
             return NextResponse.json({ error: 'Database error occurred: ' + error }, { status: 500 })
         }
+    } else {
+        return NextResponse.json([], { status: 200 })
     }
 }

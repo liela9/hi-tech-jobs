@@ -27,7 +27,7 @@ interface TableTopbarProps {
     currentPath: string;
 }
 
-async function handleRefreshData() {
+async function handleRefreshData(): Promise<void> {
     const preferences = await getUserPreferences()
 
     if (preferences) {

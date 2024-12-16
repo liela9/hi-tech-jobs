@@ -41,7 +41,7 @@ app.prepare().then(() => {
     port: Number(process.env.DB_PORT),
   });
 
-  async function setupDatabaseWatcher() {
+  async function setupDatabaseWatcher(): Promise<void> {
     try {
       await dbEmitter.connect();
       await dbEmitter.watchTable("jobs");

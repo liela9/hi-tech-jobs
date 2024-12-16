@@ -17,7 +17,7 @@ export const CATEGORIES = [
   'support',
 ]
 
-export async function turnIsDeleted(jobs: Job[]) {
+export async function turnIsDeleted(jobs: Job[]): Promise<void> {
   for (const element of jobs) {
     try {
       await fetch(`${ROOT_PATH}/api/jobs/deleted`, {
@@ -43,6 +43,6 @@ export const changeIsDeleted = (rowSelection: {[key: string]: boolean} | undefin
     turnIsDeleted(data)
   }
   // TODO: Fix that
-  // // refresh the browser for upodated jobs in table (curently causes SyntaxError: Unexpected end of JSON input (at api/jobs/deleted/route.ts?d997:22:32)) 
+  // // refresh the browser for updated jobs in table (currently causes SyntaxError: Unexpected end of JSON input (at api/jobs/deleted/route.ts?d997:22:32)) 
   // window.location.reload();
 }

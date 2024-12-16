@@ -4,7 +4,7 @@ import pool from "@/lib/db"
 
 
 // Get all deleted jobs
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
     try {
         const result = await pool.query(
             `SELECT * FROM jobs
@@ -18,7 +18,7 @@ export async function GET() {
 }
 
 // Turn isDeleted value
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest): Promise<NextResponse> {
     const data = await request.json()
     const { id } = data
 

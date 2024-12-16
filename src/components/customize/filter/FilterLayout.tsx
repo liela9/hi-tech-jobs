@@ -27,7 +27,7 @@ interface FilterLayoutProps {
   categories: string[];
 }
 
-async function postUserPreferences(includes: string[], excludes: string[], categories: string[]) {
+async function postUserPreferences(includes: string[], excludes: string[], categories: string[]): Promise<void> {
   try {
     await fetch(`${ROOT_PATH}/api/filter`, {
       method: 'POST',
@@ -41,7 +41,7 @@ async function postUserPreferences(includes: string[], excludes: string[], categ
   }
 }
 
-async function loadJobs(includes: string[], excludes: string[], categories: string[]) {
+async function loadJobs(includes: string[], excludes: string[], categories: string[]): Promise<number> {
   try {
     // clear jobs table from previous data
     await fetch(`${ROOT_PATH}/api/jobs`, {
@@ -72,6 +72,7 @@ async function loadJobs(includes: string[], excludes: string[], categories: stri
     return jobs.length;
   } catch (error) {
     console.error(`Error message: `, error);
+    return 0;
   }
 }
 
